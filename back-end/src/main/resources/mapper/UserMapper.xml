@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- MyBatis的DTD约束，固定写法，用于校验XML语法 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 核心：namespace = Mapper接口全限定类名，必须完全一致 -->
+<mapper namespace="org.example.backend.mapper.UserMapper">
+    <!--    用户登录-->
+    <select id="login" resultType="org.example.backend.entity.User">
+        select * from user where account = #{account} and password = #{password} and locked=0
+    </select>
+    <select id="selectUserById" resultType="org.example.backend.entity.User">
+        select * from user where id=#{id}
+    </select>
+    <update id="updateUser">
+        update user
+        <trim prefix="SET" suffixOverrides="," prefixOverrides=",">
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="account != null and account != ''">account = #{account},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="locked != null">locked = #{locked},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+            <if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--根据账号查询用户信息-->
+    <select id="selectUserByAccount" resultType="org.example.backend.entity.User">
+        select * from user where account = #{account}
+    </select>
+</mapper>
