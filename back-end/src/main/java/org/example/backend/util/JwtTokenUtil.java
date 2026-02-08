@@ -65,7 +65,7 @@ public class JwtTokenUtil {
      */
     public String generateRefreshToken(Long userId) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration * 1000 * 24 * 7);  // 7天
+        Date expiryDate = new Date(now.getTime() + expiration * 1000 * 2);
 
         return Jwts.builder()
                 .setSubject(userId.toString())
@@ -149,8 +149,8 @@ public class JwtTokenUtil {
     public boolean isTokenAboutToExpire(String token) {
         Date expiration = getExpirationDateFromToken(token);
         Date now = new Date();
-        // 如果剩余时间小于30分钟，认为即将过期
-        return expiration.getTime() - now.getTime() < 30 * 60 * 1000;
+        // 如果剩余时间小于5分钟，认为即将过期
+        return expiration.getTime() - now.getTime() < 5 * 60 * 1000;
     }
 }
 

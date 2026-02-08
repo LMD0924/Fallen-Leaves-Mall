@@ -78,7 +78,7 @@ public class AuthServiceUtil {
                 .id(user.getId())
                 .username(user.getUsername())
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                //.refreshToken(refreshToken)
                 .expiresIn(expiration)
                 .tokenType("Bearer")
                 .role(user.getRole())
@@ -141,15 +141,16 @@ public class AuthServiceUtil {
         tokenRedisUtil.storeRefreshToken(newRefreshToken, user.getId(), expiration * 24 * 30);
 
         // 6. 返回结果
-        return LoginResultVO.builder()
+/*        return LoginResultVO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
+                //.refreshToken(newRefreshToken)
                 .expiresIn(expiration)
                 .tokenType("Bearer")
                 .role(user.getRole())
-                .build();
+                .build();*/
+        return null;
     }
 
     /**

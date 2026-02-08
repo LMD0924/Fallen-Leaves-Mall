@@ -29,34 +29,26 @@ function handleResponse(data, successCallback, failureCallback) {
   }
 }
 
-// 对象转URL参数
-function objectToURLSearchParams(obj) {
-  const params = new URLSearchParams();
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      params.append(key, obj[key]);
-    }
-  }
-  return params;
-}
-
-// POST 请求
+// POST 请求（修复核心：直接发送JSON数据，不再转URL参数）
 function post(url, data, success, failure = defaultFailure, error = defaultError) {
-  axios.post(url, objectToURLSearchParams(data), {
+  // 返回Promise，支持await调用
+  return axios.post(url, data, {  // 直接传递JSON对象，不再转换
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",  // 匹配JSON格式
       "Authorization": getAuthToken()
     },
     withCredentials: true
   }).then(({data}) => {
     handleResponse(data, success, failure);
+    return data; // 返回数据，方便调用方处理
   }).catch(err => {
     console.error('请求错误:', err);
     error();
+    throw err; // 抛出异常，让调用方能捕获
   })
 }
 
-// GET 请求
+// GET 请求（保持不变）
 function get(url, data = null, success, failure = defaultFailure, error = defaultError) {
   const config = {
     withCredentials: true,
@@ -66,35 +58,39 @@ function get(url, data = null, success, failure = defaultFailure, error = defaul
     }
   };
 
-  axios.get(url, config)
+  return axios.get(url, config)
     .then(({data}) => {
       handleResponse(data, success, failure);
+      return data;
     })
     .catch(err => {
       console.error('请求错误:', err);
       error();
-    })
+      throw err;
+    });
 }
 
-// PUT 请求
+// PUT 请求（同步修复：直接发送JSON）
 function put(url, data, success, failure = defaultFailure, error = defaultError) {
-  axios.put(url, objectToURLSearchParams(data), {
+  return axios.put(url, data, {  // 直接传递JSON对象
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
       "Authorization": getAuthToken(),
     },
     withCredentials: true,
   })
     .then(({ data }) => {
       handleResponse(data, success, failure);
+      return data;
     })
     .catch(err => {
       console.error('请求错误:', err);
       error();
+      throw err;
     });
 }
 
-// DELETE 请求
+// DELETE 请求（保持不变）
 function del(url, data, success, failure = defaultFailure, error = defaultError) {
   const config = {
     withCredentials: true,
@@ -104,19 +100,21 @@ function del(url, data, success, failure = defaultFailure, error = defaultError)
     },
   };
 
-  axios.delete(url, config)
+  return axios.delete(url, config)
     .then(({ data }) => {
       handleResponse(data, success, failure);
+      return data;
     })
     .catch(err => {
       console.error('请求错误:', err);
       error();
+      throw err;
     });
 }
 
-// 上传文件
+// 上传文件（保持不变）
 function upload(url, formData, success, failure = defaultFailure, error = defaultError) {
-  axios.post(url, formData, {
+  return axios.post(url, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       "Authorization": getAuthToken()
@@ -124,10 +122,14 @@ function upload(url, formData, success, failure = defaultFailure, error = defaul
     withCredentials: true
   }).then(({data}) => {
     handleResponse(data, success, failure);
+    return data;
   }).catch(err => {
     console.error('上传错误:', err);
     error();
+    throw err;
   })
 }
+
+// 移除无用的objectToURLSearchParams方法（已不需要）
 
 export { get, post, put, del, upload };

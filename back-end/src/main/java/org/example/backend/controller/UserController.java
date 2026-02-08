@@ -50,7 +50,7 @@ public class UserController {
         );
 
         log.info("用户 {} 登录成功，IP: {}", request.getAccount(), ipAddress);
-        return RestBean.success(result);
+        return RestBean.success("登录成功", result);
     }
 
     @PostMapping("/logout")
