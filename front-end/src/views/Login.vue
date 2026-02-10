@@ -5,7 +5,7 @@
     <div class="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
     <!-- 登录卡片 -->
-    <div class="relative z-10 w-full max-w-md p-8 space-y-8 bg-white bg-opacity-90 dark:bg-gray-900 dark:bg-opacity-80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800">
+    <div class="relative z-10 w-full max-w-md p-8 space-y-8 bg-white bg-opacity-90 dark:bg-black dark:bg-opacity-80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800">
       <!-- 标题 -->
       <div class="text-center">
         <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
@@ -28,7 +28,7 @@
               id="account"
               v-model="form.account"
               required
-              class="w-full pl-10 pr-4 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-800 bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
+              class="w-full pl-10 pr-4 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-black bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
               placeholder="请输入账号"
             />
           </div>
@@ -46,7 +46,7 @@
               id="password"
               v-model="form.password"
               required
-              class="w-full pl-10 pr-10 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-800 bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
+              class="w-full pl-10 pr-10 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-black bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
               placeholder="请输入密码"
             />
             <button
@@ -67,7 +67,7 @@
               type="checkbox"
               v-model="form.agreement"
               required
-              class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+              class="w-4 h-4 text-blue-600 bg-white dark:bg-black border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-black"
             />
           </div>
           <label for="agreement" class="ml-2 text-sm text-gray-600 dark:text-gray-400">

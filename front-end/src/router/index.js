@@ -14,6 +14,12 @@ const router = createRouter({
       name:'个人主页',
       component:()=>import('@/views/User.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path:'/SystemSettings',
+      name:'系统设置',
+      component:()=>import('@/components/SystemSettings.vue'),
+      meta: { requiresAuth: true }
     }
   ],
 })
@@ -24,7 +30,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     // 获取本地存储的token
     const token = localStorage.getItem('落叶商城token');
-    
+
     // 如果有token，放行
     if (token) {
       next();

@@ -1,8 +1,8 @@
 <template>
   <contextHolder />
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+  <div class="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
     <!-- 导航栏 -->
-    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
+    <nav class="bg-white dark:bg-black shadow-lg sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <!-- 左侧：Logo和导航 -->
@@ -35,21 +35,21 @@
               <input
                 type="text"
                 placeholder="搜索商品..."
-                class="pl-10 pr-4 py-2 w-48 lg:w-64 rounded-lg bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                class="pl-10 pr-4 py-2 w-48 lg:w-64 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
               />
               <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
             </div>
 
             <!-- 购物车 -->
-            <button class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-              <i class="fa fa-shopping-cart text-xl"></i>
-              <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+            <button class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-all transform hover:scale-110">
+              <i class="fa fa-shopping-bag text-xl"></i>
+              <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">3</span>
             </button>
 
             <!-- 用户菜单 -->
-            <div class="relative group">
-              <button class="flex items-center space-x-2 focus:outline-none">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold">
+            <div class="relative">
+              <button @click="toggleUserMenu" class="flex items-center space-x-2 focus:outline-none">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold cursor-pointer">
                   {{ userInfo.username?.charAt(0) || 'U' }}
                 </div>
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden md:block">
@@ -59,9 +59,9 @@
               </button>
 
               <!-- 下拉菜单 -->
-              <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-1 z-10 hidden group-hover:block border border-gray-200 dark:border-gray-700">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <i class="fa fa-user mr-2"></i>个人中心
+              <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-lg shadow-xl py-1 z-10 border border-gray-200 dark:border-gray-700">
+                <a href="/SystemSettings" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <i class="fa fa-user mr-2"></i>系统设置
                 </a>
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                   <i class="fa fa-heart mr-2"></i>我的收藏
@@ -83,7 +83,7 @@
     <!-- 主要内容 -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- 欢迎横幅 -->
-      <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 mb-8 border border-blue-100 dark:border-gray-700">
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-black dark:to-black rounded-2xl p-6 mb-8 border border-blue-100 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -104,7 +104,7 @@
 
       <!-- 功能区 -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+        <div class="bg-white dark:bg-black rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
           <div class="flex items-center">
             <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
               <i class="fa fa-box text-blue-600 dark:text-blue-400 text-xl"></i>
@@ -164,7 +164,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div v-for="product in recommendedProducts" :key="product.id"
-               class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
+               class="bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700">
             <!-- 商品图片 -->
             <div class="relative h-48 overflow-hidden">
               <img :src="product.image" :alt="product.name" class="w-full h-full object-cover">
@@ -212,7 +212,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
           <div v-for="item in recentViewed" :key="item.id"
-               class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 transition-colors cursor-pointer">
+               class="bg-white dark:bg-black rounded-lg p-3 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 transition-colors cursor-pointer">
             <img :src="item.image" :alt="item.name" class="w-full h-24 object-cover rounded mb-2">
             <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1 mb-1">{{ item.name }}</p>
             <p class="text-xs text-gray-500 dark:text-gray-400">¥{{ formatMoney(item.price) }}</p>
@@ -228,7 +228,7 @@
     </main>
 
     <!-- 底部信息 -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+    <footer class="bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 mt-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -288,6 +288,14 @@ const userInfo = reactive({
   vipLevel: 1,
   avatar: ''
 });
+
+// 用户菜单状态
+const userMenuOpen = ref(false);
+
+// 切换用户菜单
+const toggleUserMenu = () => {
+  userMenuOpen.value = !userMenuOpen.value;
+};
 
 // 推荐商品数据
 const recommendedProducts = ref([
@@ -392,6 +400,16 @@ const handleLogout = () => {
   messageApi.success('已安全退出');
   router.push('/login');
 };
+
+// 点击外部关闭菜单
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const userMenu = document.querySelector('.relative:nth-child(3)');
+    if (userMenu && !userMenu.contains(e.target)) {
+      userMenuOpen.value = false;
+    }
+  });
+});
 </script>
 
 <style>
