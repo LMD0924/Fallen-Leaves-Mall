@@ -117,7 +117,7 @@ public class AuthServiceUtil {
         }
 
         // 2. 获取用户信息
-        User user = userService.selectUserById(userId);
+        LoginResultVO user = userService.selectUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("用户不存在");
         }

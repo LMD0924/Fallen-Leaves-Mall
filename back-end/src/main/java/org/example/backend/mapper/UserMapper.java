@@ -1,7 +1,10 @@
 package org.example.backend.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
+
+import java.util.List;
 
 /*
  * @Author:总会落叶
@@ -18,7 +21,12 @@ public interface UserMapper {
     /*
     * 根据id查询用户
     * */
-    User selectUserById(Long id);
+    LoginResultVO selectUserById(Long id);
+
+    /*
+    * 管理员查询全部用户
+    * */
+    List<LoginResultVO> selectAllUser();
 
     /*
     * 更新用户信息

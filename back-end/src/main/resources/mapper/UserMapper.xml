@@ -10,7 +10,7 @@
     <select id="login" resultType="org.example.backend.entity.User">
         select * from user where account = #{account} and password = #{password} and locked=0
     </select>
-    <select id="selectUserById" resultType="org.example.backend.entity.User">
+    <select id="selectUserById" resultType="org.example.backend.controller.VO.LoginResultVO">
         select * from user where id=#{id}
     </select>
     <update id="updateUser">
@@ -33,5 +33,10 @@
     <!--根据账号查询用户信息-->
     <select id="selectUserByAccount" resultType="org.example.backend.entity.User">
         select * from user where account = #{account}
+    </select>
+
+<!--    管理员查询全部用户-->
+    <select id="selectAllUser" resultType="org.example.backend.controller.VO.LoginResultVO">
+            select * from user
     </select>
 </mapper>

@@ -32,3 +32,8 @@ jwt:
 logging:
   pattern:
     dateformat: yyyy年MM月dd日 HH:mm:ss.SSS
+server:
+  servlet:
+    encoding:
+      enabled: true
+      charset: UTF-8

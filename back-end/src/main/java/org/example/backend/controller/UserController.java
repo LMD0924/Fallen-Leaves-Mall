@@ -10,9 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.backend.common.RestBean;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.controller.param.UserLoginParam;
+import org.example.backend.entity.User;
+import org.example.backend.service.UserService;
 import org.example.backend.util.AuthServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 /*
  * @Author:总会落叶
@@ -33,6 +38,8 @@ public class UserController {
 
     @Autowired
     private AuthServiceUtil authServiceUtil;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     @Operation(summary = "用户登录")
@@ -51,6 +58,41 @@ public class UserController {
 
         log.info("用户 {} 登录成功，IP: {}", request.getAccount(), ipAddress);
         return RestBean.success("登录成功", result);
+    }
+
+    /*
+    * 根据id查询用户信息
+    * */
+    @GetMapping("/selectUserById")
+    public RestBean<LoginResultVO> selectUserById(HttpServletRequest request){
+        Long userId = (Long) request.getAttribute("id");
+        if(userId == null) return RestBean.failure("身份不合法");
+        return RestBean.success(userService.selectUserById(userId));
+    }
+
+    /*
+    * 更新用户信息
+    * */
+    @PostMapping("/updateUser")
+    public RestBean<LoginResultVO> updateUser(@RequestBody User user,
+                                              HttpServletRequest request){
+        Long userId = (Long) request.getAttribute("id");
+        if(userId == null) return RestBean.failure("身份不合法");
+        LoginResultVO result = userService.selectUserById(userId);
+        if(!Objects.equals(result.getRole(),"管理员") || !userId.equals(user.getId())) return RestBean.failure("权限不足");
+        Integer result1 = userService.updateUser(user);
+        if(result1 == 0) return RestBean.failure("更新失败");
+        return RestBean.success("更新成功",userService.selectUserById(user.getId()));
+    }
+
+    /*
+    * 管理员获取全部用户信息
+    * */
+    @GetMapping("/selectAllUser")
+    public RestBean<List<LoginResultVO>> selectAllUser(HttpServletRequest request){
+        Long userId = (Long) request.getAttribute("id");
+        if(userId!=1) return RestBean.failure("权限不足");
+        return RestBean.success(userService.selectAllUser());
     }
 
     @PostMapping("/logout")

@@ -20,6 +20,25 @@ const router = createRouter({
       name:'系统设置',
       component:()=>import('@/components/SystemSettings.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path:'/BEManagement',
+      name:'后台管理',
+      component:()=>import('@/components/BEManagement/sidebar.vue'),
+      meta: { requiresAuth: true },
+      children:[
+        {
+          path:'/BEManagement',
+          name:'后台首页',
+          component:()=>import('@/components/BEManagement/Home.vue'),
+        },
+        {
+          path:'/UserManagement',
+          name:'用户管理',
+          component:()=>import('@/components/BEManagement/UserManagement.vue'),
+          meta: { requiresAuth: true }
+        }
+      ]
     }
   ],
 })

@@ -1,12 +1,14 @@
 package org.example.backend.service.Impl;
 
 import org.example.backend.common.RestBean;
+import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
 import org.example.backend.mapper.UserMapper;
 import org.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /*
@@ -29,14 +31,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectUserById(Long id) {
+    public LoginResultVO selectUserById(Long id) {
         return userMapper.selectUserById(id);
     }
 
+    /*
+    * 管理员查询全部用户
+    * */
     @Override
-    public RestBean<String> updateUser(User user) {
+    public List<LoginResultVO> selectAllUser() {
+        return userMapper.selectAllUser();
+    }
+
+    @Override
+    public Integer updateUser(User user) {
         int result = userMapper.updateUser(user);
-        if(result<0) return RestBean.failure("更新失败");
-        return RestBean.success("更新成功");
+        if(result<0) throw new RuntimeException("更新失败");
+        return result;
     }
 }
