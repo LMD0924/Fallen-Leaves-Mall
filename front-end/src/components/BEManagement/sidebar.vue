@@ -2,6 +2,7 @@
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import MenuItem from './MenuItem.vue'
+import tokenManager from '@/utils/tokenManager'
 
 const router = useRouter()
 const route = useRoute()
@@ -100,6 +101,7 @@ const setActiveMenu = (path) => {
 const handleLogout = () => {
   // 退出登录逻辑
   console.log('退出登录')
+  tokenManager.clearAccessToken()
   router.push('/login')
 }
 

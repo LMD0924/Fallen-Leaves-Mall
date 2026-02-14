@@ -1,3 +1,159 @@
+<script setup>
+import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { message } from "ant-design-vue";
+import { get } from "@/net/index.js";
+import tokenManager from '@/utils/tokenManager';
+
+const router = useRouter();
+const [messageApi, contextHolder] = message.useMessage()
+
+// 用户信息
+const userInfo = ref({
+  username: '',
+  balance: 0,
+  vipLevel: 1,
+  avatar: ''
+});
+
+// 用户菜单状态
+const userMenuOpen = ref(false);
+
+// 切换用户菜单
+const toggleUserMenu = () => {
+  userMenuOpen.value = !userMenuOpen.value;
+};
+
+// 推荐商品数据
+const recommendedProducts = ref([
+  {
+    id: 1,
+    name: '无线蓝牙耳机',
+    description: '高音质降噪，超长续航',
+    price: 299,
+    originalPrice: 399,
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
+    isNew: true,
+    isFavorite: false
+  },
+  {
+    id: 2,
+    name: '智能手表',
+    description: '运动健康监测，NFC支付',
+    price: 1299,
+    originalPrice: 1499,
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w-400&h=300&fit=crop',
+    isNew: false,
+    isFavorite: true
+  },
+  {
+    id: 3,
+    name: '笔记本电脑',
+    description: '高性能轻薄本，办公游戏两不误',
+    price: 5999,
+    originalPrice: 6999,
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop',
+    isNew: true,
+    isFavorite: false
+  },
+  {
+    id: 4,
+    name: '运动相机',
+    description: '4K防抖防水，户外运动必备',
+    price: 1999,
+    originalPrice: 2499,
+    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
+    isNew: false,
+    isFavorite: false
+  }
+]);
+
+// 最近浏览记录
+const recentViewed = ref([
+  { id: 1, name: '手机支架', price: 39, image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=200&h=150&fit=crop' },
+  { id: 2, name: '充电宝', price: 129, image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=150&fit=crop' },
+  { id: 3, name: '机械键盘', price: 499, image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=200&h=150&fit=crop' },
+  { id: 4, name: '游戏手柄', price: 299, image: 'https://images.unsplash.com/photo-1535228483100-0b494c6cae77?w=200&h=150&fit=crop' },
+  { id: 5, name: '平板电脑', price: 3299, image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' },
+  { id: 6, name: '智能音箱', price: 399, image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=200&h=150&fit=crop' }
+]);
+
+// 页面加载时获取用户信息
+onMounted(async () => {
+  try {
+    // 检查是否有token
+    const token = tokenManager.getAccessToken();
+    if (!token) {
+      console.log('token不合法，跳转到登录页');
+      await router.push('/');
+      return;
+    }
+    await get('api/user/selectUserById', {},
+      (message, data) => {
+        console.log("用户信息：", data);
+        // 注意：这里 data 就是后端返回的用户信息
+        userInfo.value = data;
+      },
+      (message) => {
+        console.error('获取用户信息失败:', message);
+        messageApi.error(message || '获取用户信息失败');
+        // 如果获取用户信息失败（token无效），跳回登录页
+        router.push('/');
+      },
+      () => {
+        console.error('获取用户信息系统错误');
+        messageApi.error('网络错误，请稍后重试');
+      }
+    );
+  } catch (error) {
+    console.error('获取用户信息异常:', error);
+    messageApi.error('获取用户信息失败');
+    await router.push('/');
+  }
+});
+
+
+// 格式化金额
+const formatMoney = (amount) => {
+  return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+};
+
+// 切换收藏状态
+const toggleFavorite = (product) => {
+  product.isFavorite = !product.isFavorite;
+  messageApi.success(product.isFavorite ? '已添加到收藏夹' : '已取消收藏');
+};
+
+// 添加到购物车
+const addToCart = (product) => {
+  messageApi.success(`已添加 ${product.name} 到购物车`);
+  // 这里可以添加实际的购物车逻辑
+};
+
+// 清空浏览记录
+const clearHistory = () => {
+  recentViewed.value = [];
+  messageApi.success('已清空浏览记录');
+};
+
+// 退出登录
+const handleLogout = () => {
+  tokenManager.clearAccessToken();
+  messageApi.success('已安全退出');
+  router.push('/');
+};
+
+// 点击外部关闭菜单
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const userMenu = document.querySelector('.relative:nth-child(3)');
+    if (userMenu && !userMenu.contains(e.target)) {
+      userMenuOpen.value = false;
+    }
+  });
+});
+</script>
+
 <template>
   <contextHolder />
   <div class="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
@@ -271,146 +427,6 @@
     </footer>
   </div>
 </template>
-
-<script setup>
-import { ref, reactive, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { message } from "ant-design-vue";
-import { get } from "@/net/index.js";
-
-const router = useRouter();
-const [messageApi, contextHolder] = message.useMessage()
-
-// 用户信息
-const userInfo = reactive({
-  username: '',
-  balance: 0,
-  vipLevel: 1,
-  avatar: ''
-});
-
-// 用户菜单状态
-const userMenuOpen = ref(false);
-
-// 切换用户菜单
-const toggleUserMenu = () => {
-  userMenuOpen.value = !userMenuOpen.value;
-};
-
-// 推荐商品数据
-const recommendedProducts = ref([
-  {
-    id: 1,
-    name: '无线蓝牙耳机',
-    description: '高音质降噪，超长续航',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
-    isNew: true,
-    isFavorite: false
-  },
-  {
-    id: 2,
-    name: '智能手表',
-    description: '运动健康监测，NFC支付',
-    price: 1299,
-    originalPrice: 1499,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w-400&h=300&fit=crop',
-    isNew: false,
-    isFavorite: true
-  },
-  {
-    id: 3,
-    name: '笔记本电脑',
-    description: '高性能轻薄本，办公游戏两不误',
-    price: 5999,
-    originalPrice: 6999,
-    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop',
-    isNew: true,
-    isFavorite: false
-  },
-  {
-    id: 4,
-    name: '运动相机',
-    description: '4K防抖防水，户外运动必备',
-    price: 1999,
-    originalPrice: 2499,
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
-    isNew: false,
-    isFavorite: false
-  }
-]);
-
-// 最近浏览记录
-const recentViewed = ref([
-  { id: 1, name: '手机支架', price: 39, image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=200&h=150&fit=crop' },
-  { id: 2, name: '充电宝', price: 129, image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=150&fit=crop' },
-  { id: 3, name: '机械键盘', price: 499, image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=200&h=150&fit=crop' },
-  { id: 4, name: '游戏手柄', price: 299, image: 'https://images.unsplash.com/photo-1535228483100-0b494c6cae77?w=200&h=150&fit=crop' },
-  { id: 5, name: '平板电脑', price: 3299, image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' },
-  { id: 6, name: '智能音箱', price: 399, image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=200&h=150&fit=crop' }
-]);
-
-// 页面加载时获取用户信息
-onMounted(async () => {
-  try {
-    const token = localStorage.getItem('落叶商城token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-
-    // 模拟获取用户信息
-    // 实际项目中应该调用API
-    userInfo.username = '落叶用户';
-    userInfo.balance = 1588.50;
-    userInfo.vipLevel = 3;
-  } catch (error) {
-    console.error('获取用户信息失败:', error);
-    messageApi.error('获取用户信息失败');
-  }
-});
-
-// 格式化金额
-const formatMoney = (amount) => {
-  return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-};
-
-// 切换收藏状态
-const toggleFavorite = (product) => {
-  product.isFavorite = !product.isFavorite;
-  messageApi.success(product.isFavorite ? '已添加到收藏夹' : '已取消收藏');
-};
-
-// 添加到购物车
-const addToCart = (product) => {
-  messageApi.success(`已添加 ${product.name} 到购物车`);
-  // 这里可以添加实际的购物车逻辑
-};
-
-// 清空浏览记录
-const clearHistory = () => {
-  recentViewed.value = [];
-  messageApi.success('已清空浏览记录');
-};
-
-// 退出登录
-const handleLogout = () => {
-  localStorage.removeItem('落叶商城token');
-  messageApi.success('已安全退出');
-  router.push('/login');
-};
-
-// 点击外部关闭菜单
-onMounted(() => {
-  document.addEventListener('click', (e) => {
-    const userMenu = document.querySelector('.relative:nth-child(3)');
-    if (userMenu && !userMenu.contains(e.target)) {
-      userMenuOpen.value = false;
-    }
-  });
-});
-</script>
 
 <style>
 /* 导入Font Awesome图标库 */

@@ -4,9 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.example.backend.util.AuthServiceUtil;
+import org.example.backend.util.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,15 +25,16 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
 
     // 不需要认证的路径
     private static final String[] EXCLUDE_PATHS = {
-            "/api/user/login",
-            "/api/user/register",
-            "/api/user/refresh",
+            "/api/auth/login",
+            "/api/auth/register",
+            "/api/auth/refresh",  // 刷新接口放行，但内部会验证Cookie
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",
             "/webjars/**",
             "/doc.html",
-            "/error"
+            "/error",
+            "/api/public/**"
     };
 
     @Override
@@ -43,6 +44,10 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
                     public boolean preHandle(HttpServletRequest request,
                                              HttpServletResponse response,
                                              Object handler) throws Exception {
+
+                        // 设置响应编码
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("application/json;charset=UTF-8");
 
                         // 获取Token
                         String token = extractToken(request);
@@ -61,9 +66,19 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
                         }
 
                         // 将用户ID存入请求上下文
+                        RequestContext.setCurrentUserId(userId);
                         request.setAttribute("userId", userId);
 
                         return true;
+                    }
+
+                    @Override
+                    public void afterCompletion(HttpServletRequest request,
+                                                HttpServletResponse response,
+                                                Object handler,
+                                                Exception ex) throws Exception {
+                        // 清理ThreadLocal，防止内存泄漏
+                        RequestContext.clear();
                     }
                 })
                 .addPathPatterns("/api/**")
@@ -86,23 +101,5 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
         }
 
         return null;
-    }
-}
-
-// 请求上下文工具类
-@Component
-class RequestContext {
-    private static final ThreadLocal<Long> currentUserId = new ThreadLocal<>();
-
-    public static void setCurrentUserId(Long userId) {
-        currentUserId.set(userId);
-    }
-
-    public static Long getCurrentUserId() {
-        return currentUserId.get();
-    }
-
-    public static void clear() {
-        currentUserId.remove();
     }
 }

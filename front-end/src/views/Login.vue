@@ -1,3 +1,100 @@
+<script setup>
+import { ref, reactive } from 'vue';
+import {message} from "ant-design-vue";
+import { useThemeStore } from '../stores/theme';
+import router from "@/router/index.js";
+import tokenManager from '../utils/tokenManager';
+import {post} from "@/net/index.js";
+
+const themeStore = useThemeStore();
+const [messageApi, contextHolder] = message.useMessage()
+// 表单数据
+const form = reactive({
+  account: '',
+  password: '',
+  agreement: false
+});
+
+// 状态变量
+const showPassword = ref(false);
+const isLoading = ref(false);
+const errorMessage = ref('');
+
+// 切换密码可见性
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
+// 处理登录
+const handleLogin = async () => {
+  // 重置错误信息
+  errorMessage.value = '';
+
+  // 表单验证
+  if (!form.account.trim()) {
+    errorMessage.value = '请输入账号';
+    return;
+  }
+
+  if (!form.password) {
+    errorMessage.value = '请输入密码';
+    return;
+  }
+
+  if (!form.agreement) {
+    errorMessage.value = '请阅读并同意用户协议和隐私政策';
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+
+    await post(
+      'api/auth/login',
+      {
+        account: form.account,
+        password: form.password
+      },
+      // success 回调
+      (message, data) => {
+        console.log("数据：", data);
+        // Access Token 存内存
+        tokenManager.setAccessToken(data.accessToken);
+        messageApi.success(message);
+        setTimeout(() => {
+          // 登录成功跳转个人页面
+          router.push('/User');
+        }, 500);
+      },
+      // failure 回调 - 处理业务失败
+      (message) => {
+        console.error('登录业务失败:', message);
+        errorMessage.value = message || '登录失败';
+        messageApi.error(message || '登录失败');
+      },
+      // error 回调 - 处理网络/系统错误
+      () => {
+        console.error('登录系统错误');
+        errorMessage.value = '网络错误，请稍后重试';
+        messageApi.error('网络错误，请稍后重试');
+      },
+      false // skip401 - 登录接口不需要跳过401处理
+    );
+
+  } catch (error) {
+    console.error('登录异常:', error);
+    errorMessage.value = '登录失败，请检查账号密码是否正确';
+  } finally {
+    // 注意：这里不需要重置表单和 isLoading，应该在回调中处理
+    // 或者根据实际情况调整
+    setTimeout(() => {
+      form.password = '';
+      isLoading.value = false;
+    }, 1500);
+  }
+};
+</script>
+
 <template>
   <contextHolder />
   <div class="min-h-screen flex items-center justify-center bg-cover bg-center relative" style="background-image: url('https://p26-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/33ed8bf4564549cea7236751c1ee5596~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260207155018B420D0EB0CC79C14C28A&rrcfp=f06b921b&x-expires=1773042716&x-signature=hM8fBG1gStC5bQSCektFyf9hdyQ%3D');">
@@ -107,81 +204,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, reactive } from 'vue';
-import {post} from "@/net/index.js";
-import {message} from "ant-design-vue";
-import { useThemeStore } from '../stores/theme';
-import router from "@/router/index.js";
-
-const themeStore = useThemeStore();
-const [messageApi, contextHolder] = message.useMessage()
-// 表单数据
-const form = reactive({
-  account: '',
-  password: '',
-  agreement: false
-});
-
-// 状态变量
-const showPassword = ref(false);
-const isLoading = ref(false);
-const errorMessage = ref('');
-
-// 切换密码可见性
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value;
-};
-
-// 处理登录
-const handleLogin = async () => {
-  // 重置错误信息
-  errorMessage.value = '';
-
-  // 表单验证
-  if (!form.account.trim()) {
-    errorMessage.value = '请输入账号';
-    return;
-  }
-
-  if (!form.password) {
-    errorMessage.value = '请输入密码';
-    return;
-  }
-
-  if (!form.agreement) {
-    errorMessage.value = '请阅读并同意用户协议和隐私政策';
-    return;
-  }
-
-  try {
-    // 模拟登录请求
-    isLoading.value = true;
-    post('api/user/login',{
-      account: form.account,
-      password: form.password
-    },(message,data)=>{
-      messageApi.success(message)
-      localStorage.setItem('落叶商城token',data.accessToken)
-      //登录成功跳转个人页面
-      router.push('/User')
-    })
-    // 模拟网络延迟
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // 重置表单
-    form.account = '';
-    form.password = '';
-    form.agreement = false;
-  } catch (error) {
-    console.error('登录失败:', error);
-    errorMessage.value = '登录失败，请检查账号密码是否正确';
-  } finally {
-    isLoading.value = false;
-  }
-};
-</script>
 
 <style>
 /* 导入Font Awesome图标库 */

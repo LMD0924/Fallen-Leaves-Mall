@@ -6,15 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="e9a3eec8-dd2f-4d5d-b495-42de07ece141" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/AuthServiceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/AuthServiceUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/JwtTokenUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/TokenRedisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/TokenRedisUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/net/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/net/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/User.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/User.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +46,8 @@
         <option value="Enum" />
         <option value="JavaScript File" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Vue Composition API Component" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -182,6 +189,10 @@
       <workItem from="1770721121614" duration="8543000" />
       <workItem from="1770730187871" duration="2000" />
       <workItem from="1770808200055" duration="8591000" />
+      <workItem from="1770893834006" duration="9000" />
+      <workItem from="1770977531234" duration="11050000" />
+      <workItem from="1771067210309" duration="4339000" />
+      <workItem from="1771071625915" duration="1843000" />
     </task>
     <servers />
   </component>

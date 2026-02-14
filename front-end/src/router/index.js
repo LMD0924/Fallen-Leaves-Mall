@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import tokenManager from "@/utils/tokenManager.js";
 
 
 const router = createRouter({
@@ -48,7 +49,7 @@ router.beforeEach((to, from, next) => {
   // 检查路由是否需要认证
   if (to.meta.requiresAuth) {
     // 获取本地存储的token
-    const token = localStorage.getItem('落叶商城token');
+    const token = tokenManager.getAccessToken();
 
     // 如果有token，放行
     if (token) {

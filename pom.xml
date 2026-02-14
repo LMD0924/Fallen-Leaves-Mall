@@ -42,6 +42,8 @@
         <mysql-connector.version>9.4.0</mysql-connector.version>
         <lombok.version>1.18.34</lombok.version>
         <jjwt.version>0.11.5</jjwt.version>
+        <json.version>2.0.43</json.version>
+        <hutool.version>5.8.20</hutool.version>
     </properties>
 
     <!-- 依赖管理（子模块从这里继承版本） -->
@@ -113,6 +115,19 @@
                 <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+
+            <!-- Hutool 核心工具包（包含 IdUtil） -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 
             <!-- 测试依赖 -->

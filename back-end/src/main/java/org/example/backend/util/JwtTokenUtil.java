@@ -27,6 +27,9 @@ public class JwtTokenUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshExpiration;
+
     @Value("${jwt.issuer}")
     private String issuer;
 
@@ -65,7 +68,7 @@ public class JwtTokenUtil {
      */
     public String generateRefreshToken(Long userId) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration * 1000 * 2);
+        Date expiryDate = new Date(now.getTime() + refreshExpiration * 1000);
 
         return Jwts.builder()
                 .setSubject(userId.toString())
@@ -151,6 +154,19 @@ public class JwtTokenUtil {
         Date now = new Date();
         // 如果剩余时间小于5分钟，认为即将过期
         return expiration.getTime() - now.getTime() < 5 * 60 * 1000;
+    }
+
+    /**
+     * 获取令牌剩余过期时间（秒）
+     */
+    public long getRemainingExpireTime(String token) {
+        try {
+            Date expiration = getExpirationDateFromToken(token);
+            long remaining = expiration.getTime() - System.currentTimeMillis();
+            return remaining > 0 ? remaining / 1000 : 0;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
 

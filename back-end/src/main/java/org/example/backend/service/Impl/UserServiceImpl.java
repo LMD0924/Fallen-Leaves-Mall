@@ -24,10 +24,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String account, String password) {
+        // 1. 先根据账号查询用户
         User user = userMapper.selectUserByAccount(account);
-        if(user==null) throw new RuntimeException("用户不存在");
-        if(!Objects.equals(user.getLocked(), "0")) throw new RuntimeException("用户已被锁定");
-        return userMapper.login(account, password);
+
+        // 2. 验证用户是否存在
+        if(user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        // 3. 验证账号是否被锁定
+        if(!"0".equals(user.getLocked())) {
+            throw new RuntimeException("用户已被锁定");
+        }
+
+        // 4. 验证密码（这里应该有密码加密验证）
+        // 假设 userMapper.login 会验证密码并返回用户信息
+        User loginUser = userMapper.login(account, password);
+
+        if(loginUser == null) {
+            throw new RuntimeException("密码错误");
+        }
+
+        // 5. 清除敏感信息
+        loginUser.setPassword(null);  // 移除密码
+
+        return loginUser;
     }
 
     @Override
