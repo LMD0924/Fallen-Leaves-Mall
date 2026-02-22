@@ -59,7 +59,7 @@
 
 # 商家模块（merchant-backend)
 
-### **1.申请为商家**
+## **1.申请为商家**
 
 ```
 首先普通用户可以申请为商家，需提交相应材料，等待管理员审核
@@ -67,3 +67,19 @@
 审核失败：返回失败原因，可以重新申请提交
 ```
 
+## 2. 功能对应关系
+
+| 功能         | 后端说明                                              |
+| :----------- | :---------------------------------------------------- |
+| 申请商家     | applyMerchant → insert，状态 0 待审核                 |
+| 查询申请进度 | queryApplyProgress(userId) → 按 userId 查询           |
+| 条件查询商家 | selectMerchant → 支持 id/userId/类型/状态/名称模糊    |
+| 按 ID 查详情 | selectMerchantById → 按 id 查一条                     |
+| 按状态查询   | selectMerchantByStatus → 按 status 查                 |
+| 模糊搜索     | searchMerchant → 按 keyword 对 merchantName like      |
+| 修改商家信息 | updateMerchant → updateById，通过时改用户角色         |
+| 逻辑删除     | deleteMerchant → deleteById（@TableLogic 做逻辑删除） |
+
+------
+
+##### 按当前实现，商户的增删改查、申请、审核、逻辑删除和前端列表/表单/删除已全部用 MyBatis-Plus 完成并打通。

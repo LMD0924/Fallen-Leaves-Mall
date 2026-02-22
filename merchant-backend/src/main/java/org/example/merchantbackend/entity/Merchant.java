@@ -1,5 +1,10 @@
 package org.example.merchantbackend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,12 +12,14 @@ import lombok.NoArgsConstructor;
 /*
  * @Author:总会落叶
  * @Date:2026/2/9
- * @Description:
+ * @Description: 商家实体（MyBatis-Plus）
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("merchant")
 public class Merchant {
+    @TableId
     private Long id;//商家ID
     private Long userId;//用户ID
     private Integer merchantType; //商家类型
@@ -21,7 +28,9 @@ public class Merchant {
     private String contactPhone; //联系人电话
     private String contactEmail; //联系人邮箱
     private String businessLicense; //营业执照号
-    private String LicenseImage; //营业执照图片
+    @TableField("license_image")
+    @JsonProperty("LicenseImage")
+    private String licenseImage; //营业执照图片（DB: license_image，JSON 可为 LicenseImage）
     private String idCard; //身份证号
     private String idCardFront; //身份证正面图片
     private String idCardBack; //身份证背面图片
@@ -29,7 +38,8 @@ public class Merchant {
     private String rejectReason; //拒绝原因
     private String auditTime; //审核时间
     private String auditor; //审核人
-    private String isDeleted; //是否删除
+    @TableLogic(value = "0", delval = "1")
+    private Integer isDeleted; //是否删除（0-未删 1-已删）
     private String createTime; //创建时间
     private String updateTime; //更新时间
 }

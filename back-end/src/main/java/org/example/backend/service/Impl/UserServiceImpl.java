@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 3. 验证账号是否被锁定
-        if(!"0".equals(user.getLocked())) {
+        if(user.getLocked() != 0) {
             throw new RuntimeException("用户已被锁定");
         }
 
@@ -70,4 +70,5 @@ public class UserServiceImpl implements UserService {
         if(result<0) throw new RuntimeException("更新失败");
         return result;
     }
+
 }

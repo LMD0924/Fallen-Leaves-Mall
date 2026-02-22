@@ -2,13 +2,13 @@ package org.example.merchantbackend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.example.merchantbackend.entity.Merchant;
+import org.example.merchantbackend.entity.Shop;
 
 /*
  * @Author:总会落叶
- * @Date:2026/2/9
- * @Description: 商家 Mapper（MyBatis-Plus）
+ * @Date:2026/2/20
+ * @Description:
  */
 @Mapper
-public interface MerchantMapper extends BaseMapper<Merchant> {
+public interface ShopMapper extends BaseMapper<Shop> {
 }

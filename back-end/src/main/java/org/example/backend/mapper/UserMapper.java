@@ -1,5 +1,6 @@
 package org.example.backend.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
@@ -12,7 +13,7 @@ import java.util.List;
  * @Description:
  */
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
     /*
     * 用户登录
     * */

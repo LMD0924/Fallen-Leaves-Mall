@@ -1,5 +1,318 @@
+<script setup>
+import {ref, reactive, computed, watch, onMounted, onUnmounted} from 'vue'
+
+import {get, post} from '@/net/index.js'
+import { ElMessage } from 'element-plus'
+
+// ============ 状态变量 ============
+const totalUsers = ref(0)
+const todayNewUsers = ref(0)
+const userGrowth = ref(0)
+const todayCompare = ref(0)
+const activeUsers = ref(0)
+const activeRate = ref(0)
+const vipUsers = ref(0)
+const vipRate = ref(0)
+const pendingReview = ref(0)
+
+// 筛选状态
+const showUserTypeDropdown = ref(false)
+const showStatusDropdown = ref(false)
+const showDateDropdown = ref(false)
+const userTypeFilter = ref('all')
+const statusFilter = ref('all')
+const dateRangeText = ref('最近30天')
+const searchKeyword = ref('')
+
+// 表格选中状态
+const selectedUsers = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+
+// 模态框状态
+const showUserModal = ref(false)
+const modalMode = ref('create') // 'create' or 'edit'
+const userForm = reactive({
+  id: null,
+  locked: 0,
+  status: 0
+})
+
+// 详情抽屉
+const showDetailDrawer = ref(false)
+const currentUserDetail = ref(null)
+
+// ============ 后端数据 ============
+const users = ref([])
+const loading = ref(false)
+
+// 获取用户数据
+const fetchUsers = async () => {
+  loading.value = true
+  try {
+    await get('/api/user/selectAllUser', null, (message, data) => {
+      users.value = data
+      console.log(users.value)
+      totalUsers.value = data.length
+      // 计算统计数据
+      activeUsers.value = data.filter(user => user.locked === 0 && user.status === 1).length
+      vipUsers.value = data.filter(user => user.role === '管理员').length
+      pendingReview.value = data.filter(user => user.locked === 0 && user.status === 0).length
+      activeRate.value = totalUsers.value > 0 ? Math.round((activeUsers.value / totalUsers.value) * 100 * 10) / 10 : 0
+      vipRate.value = totalUsers.value > 0 ? Math.round((vipUsers.value / totalUsers.value) * 100) : 0
+    }, (message) => {
+      console.error('获取用户数据失败:', message)
+    })
+  } catch (error) {
+    console.error('获取用户数据出错:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+//管理员审核用户信息
+const reviewUser = async () =>{
+  loading.value= true
+  post("api/user/updateUser",{
+  },(message,data)=>{
+    messageApi.success(message)
+  })
+}
+
+// 页面加载时获取用户数据
+onMounted(() => {
+  fetchUsers()
+})
+
+// ============ 计算属性 ============
+const filteredUsers = computed(() => {
+  return users.value.filter(user => {
+    // 用户类型筛选
+    if (userTypeFilter.value === 'admin' && user.role !== '管理员') return false
+    if (userTypeFilter.value === 'normal' && user.role === '管理员') return false
+
+    // 状态筛选
+    if (statusFilter.value !== 'all') {
+      if (statusFilter.value === 'locked' && user.locked !== 1) return false
+      if (statusFilter.value === 'active' && (user.locked !== 0 || user.status !== 1)) return false
+      if (statusFilter.value === 'pending' && (user.locked !== 0 || user.status !== 0)) return false
+      if (statusFilter.value === 'rejected' && (user.locked !== 0 || user.status !== 2)) return false
+    }
+
+    // 搜索关键词
+    if (searchKeyword.value) {
+      const keyword = searchKeyword.value.toLowerCase()
+      return user.username.toLowerCase().includes(keyword) ||
+        user.email.toLowerCase().includes(keyword) ||
+        user.phone.includes(keyword) ||
+        user.account.toLowerCase().includes(keyword)
+    }
+
+    return true
+  })
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredUsers.value.length / pageSize.value)
+})
+
+const paginatedUsers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return filteredUsers.value.slice(start, end)
+})
+
+const selectAll = computed({
+  get: () => selectedUsers.value.length === paginatedUsers.value.length && paginatedUsers.value.length > 0,
+  set: (value) => {
+    if (value) {
+      selectedUsers.value = paginatedUsers.value.map(u => u.id)
+    } else {
+      selectedUsers.value = []
+    }
+  }
+})
+
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  let start = Math.max(1, currentPage.value - 2)
+  let end = Math.min(total, start + 4)
+
+  if (end - start < 4) {
+    start = Math.max(1, end - 4)
+  }
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+// ============ 方法 ============
+const toggleUserTypeDropdown = () => {
+  showUserTypeDropdown.value = !showUserTypeDropdown.value
+  showStatusDropdown.value = false
+  showDateDropdown.value = false
+}
+
+const toggleStatusDropdown = () => {
+  showStatusDropdown.value = !showStatusDropdown.value
+  showUserTypeDropdown.value = false
+  showDateDropdown.value = false
+}
+
+const toggleDateDropdown = () => {
+  showDateDropdown.value = !showDateDropdown.value
+  showUserTypeDropdown.value = false
+  showStatusDropdown.value = false
+}
+
+const setUserTypeFilter = (type) => {
+  userTypeFilter.value = type
+  showUserTypeDropdown.value = false
+  currentPage.value = 1
+}
+
+const setStatusFilter = (status) => {
+  statusFilter.value = status
+  showStatusDropdown.value = false
+  currentPage.value = 1
+}
+
+const resetFilters = () => {
+  userTypeFilter.value = 'all'
+  statusFilter.value = 'all'
+  searchKeyword.value = ''
+  currentPage.value = 1
+}
+
+const formatNumber = (num) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return '-'
+  const date = new Date(dateString)
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+}
+
+// 用户操作
+const openUserModal = () => {
+  modalMode.value = 'create'
+  Object.assign(userForm, {
+    id: null,
+    username: '',
+    email: '',
+    phone: '',
+    vipLevel: 1,
+    points: 0,
+    status: 'active',
+    remark: ''
+  })
+  showUserModal.value = true
+}
+
+const editUser = (user) => {
+  modalMode.value = 'edit'
+  Object.assign(userForm, {
+    id: user.id,
+    locked: user.locked,
+    status: user.status
+  })
+  showUserModal.value = true
+}
+
+const closeUserModal = () => {
+  showUserModal.value = false
+}
+
+const saveUser = async () => {
+  try {
+    if (modalMode.value === 'edit') {
+      // 编辑用户，调用updateUser接口
+      await post('/api/user/updateUser', userForm, (message, data) => {
+        ElMessage.success('用户信息更新成功')
+        closeUserModal()
+        fetchUsers() // 重新获取用户列表
+      }, (message) => {
+        ElMessage.error('用户信息更新失败: ' + message)
+      })
+    }
+  } catch (error) {
+    console.error('保存用户数据出错:', error)
+    ElMessage.error('操作失败，请稍后重试')
+  }
+}
+
+const viewUserDetail = (user) => {
+  currentUserDetail.value = user
+  showDetailDrawer.value = true
+}
+
+const closeDetailDrawer = () => {
+  showDetailDrawer.value = false
+  currentUserDetail.value = null
+}
+
+const toggleUserStatus = async (user) => {
+  try {
+    const updatedUser = {
+      id: user.id,
+      locked: user.locked === 1 ? 0 : 1,
+      status: user.status
+    }
+    await post('/api/user/updateUser', updatedUser, (message, data) => {
+      ElMessage.success(user.locked === 1 ? '用户已启用' : '用户已禁用')
+      fetchUsers() // 重新获取用户列表
+    }, (message) => {
+      ElMessage.error('操作失败: ' + message)
+    })
+  } catch (error) {
+    console.error('切换用户状态出错:', error)
+    ElMessage.error('操作失败，请稍后重试')
+  }
+}
+
+const deleteUser = (user) => {
+  if (confirm(`确定要删除用户 ${user.name} 吗？`)) {
+    const index = users.value.findIndex(u => u.id === user.id)
+    if (index !== -1) {
+      users.value.splice(index, 1)
+    }
+  }
+}
+
+const handleExport = () => {
+  alert('开始导出用户数据...')
+}
+
+// 监听页码变化
+watch([userTypeFilter, statusFilter, searchKeyword], () => {
+  currentPage.value = 1
+})
+
+// 点击外部关闭下拉菜单
+const handleClickOutside = (e) => {
+  if (!e.target.closest('.relative')) {
+    showUserTypeDropdown.value = false
+    showStatusDropdown.value = false
+    showDateDropdown.value = false
+  }
+}
+
+// 生命周期
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+</script>
+
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 page-enter-active">
     <!-- 页面标题与操作区 -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
@@ -147,14 +460,16 @@
               class="px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               <i class="fas fa-circle text-gray-500"></i>
-              <span class="text-gray-700 dark:text-gray-300">{{ statusFilter === 'all' ? '全部状态' : statusFilter === 'active' ? '已激活' : '已禁用' }}</span>
+              <span class="text-gray-700 dark:text-gray-300">{{ statusFilter === 'all' ? '全部状态' : statusFilter === 'active' ? '已通过' : statusFilter === 'pending' ? '待审核' : statusFilter === 'rejected' ? '未通过' : '已禁用' }}</span>
               <i class="fas fa-chevron-down text-gray-400 text-xs ml-1"></i>
             </button>
 
             <div v-if="showStatusDropdown" class="absolute top-full left-0 mt-1 w-40 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 py-2 z-20">
               <button @click="setStatusFilter('all')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">全部状态</button>
-              <button @click="setStatusFilter('active')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">已激活</button>
-              <button @click="setStatusFilter('inactive')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">已禁用</button>
+              <button @click="setStatusFilter('active')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">已通过</button>
+              <button @click="setStatusFilter('pending')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">待审核</button>
+              <button @click="setStatusFilter('rejected')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">未通过</button>
+              <button @click="setStatusFilter('locked')" class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800">已禁用</button>
             </div>
           </div>
 
@@ -252,10 +567,10 @@
             </th>
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">用户信息</th>
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">联系方式</th>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">会员等级</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">用户类型</th>
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">状态</th>
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">注册时间</th>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">最后登录</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">更新时间</th>
             <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">操作</th>
           </tr>
           </thead>
@@ -275,17 +590,17 @@
               <div class="flex items-center gap-3">
                 <div class="relative">
                   <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-blue-500/20">
-                    {{ user.name.charAt(0) }}
+                    {{ user.username.charAt(0) }}
                   </div>
-                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full" v-if="user.status === 'active'"></span>
-                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-gray-400 border-2 border-white dark:border-gray-900 rounded-full" v-else></span>
+                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full" v-if="user.locked === 0 && user.status === 1"></span>
+                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 border-2 border-white dark:border-gray-900 rounded-full" v-if="user.locked === 1"></span>
+                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-yellow-500 border-2 border-white dark:border-gray-900 rounded-full" v-if="user.locked === 0 && user.status === 0"></span>
+                  <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-gray-400 border-2 border-white dark:border-gray-900 rounded-full" v-if="user.locked === 0 && user.status === 2"></span>
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="font-medium text-gray-900 dark:text-white">{{ user.name }}</span>
-                    <span v-if="user.verify" class="px-1.5 py-0.5 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded flex items-center gap-0.5">
-                        <i class="fas fa-check-circle text-xs"></i> 已认证
-                      </span>
+                    <span class="font-medium text-gray-900 dark:text-white">{{ user.username }}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ user.account }}</span>
                   </div>
                   <span class="text-xs text-gray-500 dark:text-gray-400">ID: {{ user.id }}</span>
                 </div>
@@ -297,41 +612,43 @@
             </td>
             <td class="px-6 py-4">
               <div class="flex items-center gap-1.5">
-                <i class="fas fa-crown text-yellow-500 text-sm"></i>
-                <span class="text-sm font-medium text-gray-900 dark:text-white">VIP{{ user.vipLevel }}</span>
+                <i class="fas fa-user-shield text-purple-500 text-sm" v-if="user.role === '管理员'"></i>
+                <i class="fas fa-user text-gray-500 text-sm" v-else></i>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ user.role }}</span>
               </div>
-              <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ user.points }} 积分</div>
             </td>
             <td class="px-6 py-4">
-                <span
-                  class="px-2.5 py-1 text-xs font-medium rounded-full"
-                  :class="{
-                    'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400': user.status === 'active',
-                    'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400': user.status === 'inactive',
-                    'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400': user.status === 'pending'
-                  }"
-                >
-                  {{ user.status === 'active' ? '已激活' : user.status === 'inactive' ? '已禁用' : '待审核' }}
-                </span>
+              <span v-if="user.locked === 1" class="px-2 py-1 text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full">
+                    已禁用
+                  </span>
+              <span v-else-if="user.status === 0" class="px-2 py-1 text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full">
+                    待审核
+                  </span>
+              <span v-else-if="user.status === 1" class="px-2 py-1 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full">
+                    已通过
+                  </span>
+              <span v-else-if="user.status === 2" class="px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full">
+                    未通过
+                  </span>
             </td>
-            <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
-              {{ formatDate(user.registerDate) }}
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-700 dark:text-gray-300">{{ formatDate(user.createTime) }}</div>
             </td>
-            <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
-              {{ formatDate(user.lastLogin) }}
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-700 dark:text-gray-300">{{ formatDate(user.updateTime) }}</div>
             </td>
             <td class="px-6 py-4 text-right">
-              <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button @click="editUser(user)" class="p-1.5 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" title="编辑">
+              <div class="flex items-center justify-end gap-3">
+                <button @click="editUser(user)" class="p-2.5 bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition-all hover:scale-110 shadow-md" title="编辑">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button @click="viewUserDetail(user)" class="p-1.5 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" title="详情">
+                <button @click="viewUserDetail(user)" class="p-2.5 bg-purple-500 text-white hover:bg-purple-600 rounded-lg transition-all hover:scale-110 shadow-md" title="详情">
                   <i class="fas fa-eye"></i>
                 </button>
-                <button @click="toggleUserStatus(user)" class="p-1.5 text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" :title="user.status === 'active' ? '禁用' : '启用'">
-                  <i :class="['fas', user.status === 'active' ? 'fa-ban' : 'fa-check-circle']"></i>
+                <button @click="toggleUserStatus(user)" class="p-2.5 bg-yellow-500 text-white hover:bg-yellow-600 rounded-lg transition-all hover:scale-110 shadow-md" :title="user.locked === 1 ? '启用' : '禁用'">
+                  <i :class="['fas', user.locked === 1 ? 'fa-check-circle' : 'fa-ban']"></i>
                 </button>
-                <button @click="deleteUser(user)" class="p-1.5 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" title="删除">
+                <button @click="deleteUser(user)" class="p-2.5 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-all hover:scale-110 shadow-md" title="删除">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
@@ -424,79 +741,27 @@
             <form @submit.prevent="saveUser" class="space-y-5">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">用户名</label>
-                  <input
-                    v-model="userForm.username"
-                    type="text"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                    placeholder="请输入用户名"
-                    required
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">邮箱</label>
-                  <input
-                    v-model="userForm.email"
-                    type="email"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                    placeholder="请输入邮箱"
-                    required
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">手机号</label>
-                  <input
-                    v-model="userForm.phone"
-                    type="tel"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                    placeholder="请输入手机号"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">会员等级</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">账户状态</label>
                   <select
-                    v-model="userForm.vipLevel"
+                    v-model="userForm.locked"
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
                   >
-                    <option value="1">VIP 1</option>
-                    <option value="2">VIP 2</option>
-                    <option value="3">VIP 3</option>
-                    <option value="4">VIP 4</option>
-                    <option value="5">VIP 5</option>
+                    <option value="0">启用</option>
+                    <option value="1">禁用</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">初始积分</label>
-                  <input
-                    v-model.number="userForm.points"
-                    type="number"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">审核状态</label>
+                  <select
+                    v-model="userForm.status"
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                    placeholder="0"
-                  />
+                  >
+                    <option value="0">待审核</option>
+                    <option value="1">已通过</option>
+                    <option value="2">已拒绝</option>
+                    <option value="3">已禁用</option>
+                  </select>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">状态</label>
-                  <div class="flex items-center h-10 gap-4">
-                    <label class="flex items-center gap-2">
-                      <input type="radio" v-model="userForm.status" value="active" class="w-4 h-4 text-blue-500 focus:ring-blue-500/20 border-gray-300" />
-                      <span class="text-sm text-gray-700 dark:text-gray-300">启用</span>
-                    </label>
-                    <label class="flex items-center gap-2">
-                      <input type="radio" v-model="userForm.status" value="inactive" class="w-4 h-4 text-gray-500 focus:ring-gray-500/20 border-gray-300" />
-                      <span class="text-sm text-gray-700 dark:text-gray-300">禁用</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">备注信息</label>
-                <textarea
-                  v-model="userForm.remark"
-                  rows="3"
-                  class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                  placeholder="请输入备注信息..."
-                ></textarea>
               </div>
 
               <div class="flex justify-end gap-3 pt-4">
@@ -511,7 +776,7 @@
                   type="submit"
                   class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl transition-all hover:scale-105 active:scale-95"
                 >
-                  {{ modalMode === 'create' ? '创建用户' : '保存修改' }}
+                  保存修改
                 </button>
               </div>
             </form>
@@ -573,14 +838,14 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">注册时间</p>
                     <div class="flex items-center gap-2">
                       <i class="fas fa-calendar text-blue-500"></i>
-                      <span class="text-sm font-medium text-gray-900 dark:text-white">{{ formatDate(currentUserDetail?.registerDate) }}</span>
+                      <span class="text-sm font-medium text-gray-900 dark:text-white">{{ formatDate(currentUserDetail?.createTime) }}</span>
                     </div>
                   </div>
                   <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-200/50 dark:border-gray-700/50">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">最后登录</p>
                     <div class="flex items-center gap-2">
                       <i class="fas fa-clock text-green-500"></i>
-                      <span class="text-sm font-medium text-gray-900 dark:text-white">{{ formatDate(currentUserDetail?.lastLogin) }}</span>
+                      <span class="text-sm font-medium text-gray-900 dark:text-white">{{ formatDate(currentUserDetail?.updateTime) }}</span>
                     </div>
                   </div>
                 </div>
@@ -605,11 +870,25 @@
                       <span
                         class="px-2.5 py-1 text-xs font-medium rounded-full"
                         :class="{
-                          'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400': currentUserDetail?.status === 'active',
-                          'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400': currentUserDetail?.status === 'inactive'
+                          'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400': currentUserDetail?.locked === 0,
+                          'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400': currentUserDetail?.locked === 1
                         }"
                       >
-                        {{ currentUserDetail?.status === 'active' ? '已激活' : '已禁用' }}
+                        {{ currentUserDetail?.locked === 0 ? '启用' : '禁用' }}
+                      </span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500 dark:text-gray-400">审核状态</span>
+                      <span
+                        class="px-2.5 py-1 text-xs font-medium rounded-full"
+                        :class="{
+                          'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400': currentUserDetail?.status === 1,
+                          'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400': currentUserDetail?.status === 0,
+                          'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400': currentUserDetail?.status === 2,
+                          'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400': currentUserDetail?.status === 3
+                        }"
+                      >
+                        {{ currentUserDetail?.status === 0 ? '待审核' : currentUserDetail?.status === 1 ? '已通过' : currentUserDetail?.status === 2 ? '已拒绝' : '已禁用' }}
                       </span>
                     </div>
                   </div>
@@ -657,401 +936,6 @@
   </Transition>
 </template>
 
-<script setup>
-import {ref, reactive, computed, watch, onMounted, onUnmounted} from 'vue'
-
-// ============ 状态变量 ============
-const totalUsers = ref(12345)
-const todayNewUsers = ref(128)
-const userGrowth = ref(12.5)
-const todayCompare = ref(8.3)
-const activeUsers = ref(8234)
-const activeRate = ref(66.7)
-const vipUsers = ref(3456)
-const vipRate = ref(28)
-const pendingReview = ref(23)
-
-// 筛选状态
-const showUserTypeDropdown = ref(false)
-const showStatusDropdown = ref(false)
-const showDateDropdown = ref(false)
-const userTypeFilter = ref('all')
-const statusFilter = ref('all')
-const dateRangeText = ref('最近30天')
-const searchKeyword = ref('')
-
-// 表格选中状态
-const selectedUsers = ref([])
-const currentPage = ref(1)
-const pageSize = ref(10)
-
-// 模态框状态
-const showUserModal = ref(false)
-const modalMode = ref('create') // 'create' or 'edit'
-const userForm = reactive({
-  id: null,
-  username: '',
-  email: '',
-  phone: '',
-  vipLevel: 1,
-  points: 0,
-  status: 'active',
-  remark: ''
-})
-
-// 详情抽屉
-const showDetailDrawer = ref(false)
-const currentUserDetail = ref(null)
-
-// ============ 模拟数据 ============
-const users = ref([
-  {
-    id: 1001,
-    name: '王小明',
-    email: 'wang.xm@example.com',
-    phone: '138****5678',
-    vipLevel: 3,
-    points: 2450,
-    status: 'active',
-    verify: true,
-    registerDate: '2024-01-15T08:30:00',
-    lastLogin: '2024-03-28T14:22:00'
-  },
-  {
-    id: 1002,
-    name: '李芳芳',
-    email: 'li.ff@example.com',
-    phone: '159****2341',
-    vipLevel: 5,
-    points: 8920,
-    status: 'active',
-    verify: true,
-    registerDate: '2023-11-03T10:15:00',
-    lastLogin: '2024-03-28T09:45:00'
-  },
-  {
-    id: 1003,
-    name: '张伟',
-    email: 'zhang.w@example.com',
-    phone: '177****8902',
-    vipLevel: 2,
-    points: 1230,
-    status: 'inactive',
-    verify: false,
-    registerDate: '2024-02-20T16:40:00',
-    lastLogin: '2024-03-15T11:30:00'
-  },
-  {
-    id: 1004,
-    name: '陈婷婷',
-    email: 'chen.tt@example.com',
-    phone: '152****6734',
-    vipLevel: 4,
-    points: 5670,
-    status: 'active',
-    verify: true,
-    registerDate: '2023-09-08T13:20:00',
-    lastLogin: '2024-03-28T16:15:00'
-  },
-  {
-    id: 1005,
-    name: '刘阳',
-    email: 'liu.y@example.com',
-    phone: '186****4523',
-    vipLevel: 1,
-    points: 450,
-    status: 'pending',
-    verify: false,
-    registerDate: '2024-03-25T09:10:00',
-    lastLogin: '2024-03-25T09:10:00'
-  },
-  {
-    id: 1006,
-    name: '赵雅茹',
-    email: 'zhao.yr@example.com',
-    phone: '139****7890',
-    vipLevel: 5,
-    points: 12450,
-    status: 'active',
-    verify: true,
-    registerDate: '2023-05-12T11:25:00',
-    lastLogin: '2024-03-27T20:50:00'
-  },
-  {
-    id: 1007,
-    name: '周杰',
-    email: 'zhou.j@example.com',
-    phone: '188****3467',
-    vipLevel: 3,
-    points: 3450,
-    status: 'active',
-    verify: true,
-    registerDate: '2023-12-01T14:30:00',
-    lastLogin: '2024-03-26T10:20:00'
-  },
-  {
-    id: 1008,
-    name: '吴倩',
-    email: 'wu.q@example.com',
-    phone: '151****9023',
-    vipLevel: 2,
-    points: 1890,
-    status: 'inactive',
-    verify: false,
-    registerDate: '2024-02-28T08:45:00',
-    lastLogin: '2024-03-20T15:40:00'
-  },
-  {
-    id: 1009,
-    name: '郑浩然',
-    email: 'zheng.hr@example.com',
-    phone: '155****6781',
-    vipLevel: 4,
-    points: 6780,
-    status: 'active',
-    verify: true,
-    registerDate: '2023-10-17T09:50:00',
-    lastLogin: '2024-03-28T11:05:00'
-  },
-  {
-    id: 1010,
-    name: '林心怡',
-    email: 'lin.xy@example.com',
-    phone: '157****2348',
-    vipLevel: 3,
-    points: 4320,
-    status: 'active',
-    verify: true,
-    registerDate: '2024-01-05T10:30:00',
-    lastLogin: '2024-03-27T16:30:00'
-  }
-])
-
-// ============ 计算属性 ============
-const filteredUsers = computed(() => {
-  return users.value.filter(user => {
-    // 用户类型筛选
-    if (userTypeFilter.value === 'vip' && user.vipLevel < 3) return false
-    if (userTypeFilter.value === 'normal' && user.vipLevel >= 3) return false
-
-    // 状态筛选
-    if (statusFilter.value !== 'all' && user.status !== statusFilter.value) return false
-
-    // 搜索关键词
-    if (searchKeyword.value) {
-      const keyword = searchKeyword.value.toLowerCase()
-      return user.name.toLowerCase().includes(keyword) ||
-        user.email.toLowerCase().includes(keyword) ||
-        user.phone.includes(keyword)
-    }
-
-    return true
-  })
-})
-
-const totalPages = computed(() => {
-  return Math.ceil(filteredUsers.value.length / pageSize.value)
-})
-
-const paginatedUsers = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return filteredUsers.value.slice(start, end)
-})
-
-const selectAll = computed({
-  get: () => selectedUsers.value.length === paginatedUsers.value.length && paginatedUsers.value.length > 0,
-  set: (value) => {
-    if (value) {
-      selectedUsers.value = paginatedUsers.value.map(u => u.id)
-    } else {
-      selectedUsers.value = []
-    }
-  }
-})
-
-const displayedPages = computed(() => {
-  const pages = []
-  const total = totalPages.value
-  let start = Math.max(1, currentPage.value - 2)
-  let end = Math.min(total, start + 4)
-
-  if (end - start < 4) {
-    start = Math.max(1, end - 4)
-  }
-
-  for (let i = start; i <= end; i++) {
-    pages.push(i)
-  }
-  return pages
-})
-
-// ============ 方法 ============
-const toggleUserTypeDropdown = () => {
-  showUserTypeDropdown.value = !showUserTypeDropdown.value
-  showStatusDropdown.value = false
-  showDateDropdown.value = false
-}
-
-const toggleStatusDropdown = () => {
-  showStatusDropdown.value = !showStatusDropdown.value
-  showUserTypeDropdown.value = false
-  showDateDropdown.value = false
-}
-
-const toggleDateDropdown = () => {
-  showDateDropdown.value = !showDateDropdown.value
-  showUserTypeDropdown.value = false
-  showStatusDropdown.value = false
-}
-
-const setUserTypeFilter = (type) => {
-  userTypeFilter.value = type
-  showUserTypeDropdown.value = false
-  currentPage.value = 1
-}
-
-const setStatusFilter = (status) => {
-  statusFilter.value = status
-  showStatusDropdown.value = false
-  currentPage.value = 1
-}
-
-const resetFilters = () => {
-  userTypeFilter.value = 'all'
-  statusFilter.value = 'all'
-  searchKeyword.value = ''
-  currentPage.value = 1
-}
-
-const formatNumber = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
-const formatDate = (dateString) => {
-  if (!dateString) return '-'
-  const date = new Date(dateString)
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-}
-
-// 用户操作
-const openUserModal = () => {
-  modalMode.value = 'create'
-  Object.assign(userForm, {
-    id: null,
-    username: '',
-    email: '',
-    phone: '',
-    vipLevel: 1,
-    points: 0,
-    status: 'active',
-    remark: ''
-  })
-  showUserModal.value = true
-}
-
-const editUser = (user) => {
-  modalMode.value = 'edit'
-  Object.assign(userForm, {
-    id: user.id,
-    username: user.name,
-    email: user.email,
-    phone: user.phone,
-    vipLevel: user.vipLevel,
-    points: user.points,
-    status: user.status,
-    remark: ''
-  })
-  showUserModal.value = true
-}
-
-const closeUserModal = () => {
-  showUserModal.value = false
-}
-
-const saveUser = () => {
-  if (modalMode.value === 'create') {
-    const newUser = {
-      id: Math.max(...users.value.map(u => u.id)) + 1,
-      name: userForm.username,
-      email: userForm.email,
-      phone: userForm.phone,
-      vipLevel: userForm.vipLevel,
-      points: userForm.points,
-      status: userForm.status,
-      verify: false,
-      registerDate: new Date().toISOString(),
-      lastLogin: null
-    }
-    users.value.push(newUser)
-  } else {
-    const index = users.value.findIndex(u => u.id === userForm.id)
-    if (index !== -1) {
-      users.value[index] = {
-        ...users.value[index],
-        name: userForm.username,
-        email: userForm.email,
-        phone: userForm.phone,
-        vipLevel: userForm.vipLevel,
-        points: userForm.points,
-        status: userForm.status
-      }
-    }
-  }
-  closeUserModal()
-}
-
-const viewUserDetail = (user) => {
-  currentUserDetail.value = user
-  showDetailDrawer.value = true
-}
-
-const closeDetailDrawer = () => {
-  showDetailDrawer.value = false
-  currentUserDetail.value = null
-}
-
-const toggleUserStatus = (user) => {
-  user.status = user.status === 'active' ? 'inactive' : 'active'
-}
-
-const deleteUser = (user) => {
-  if (confirm(`确定要删除用户 ${user.name} 吗？`)) {
-    const index = users.value.findIndex(u => u.id === user.id)
-    if (index !== -1) {
-      users.value.splice(index, 1)
-    }
-  }
-}
-
-const handleExport = () => {
-  alert('开始导出用户数据...')
-}
-
-// 监听页码变化
-watch([userTypeFilter, statusFilter, searchKeyword], () => {
-  currentPage.value = 1
-})
-
-// 点击外部关闭下拉菜单
-const handleClickOutside = (e) => {
-  if (!e.target.closest('.relative')) {
-    showUserTypeDropdown.value = false
-    showStatusDropdown.value = false
-    showDateDropdown.value = false
-  }
-}
-
-// 生命周期
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
-</script>
-
 <style scoped>
 /* 模态框动画 */
 .modal-enter-active,
@@ -1092,6 +976,22 @@ tbody tr {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* 页面进入动画 */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter-active {
+  animation: fade-up 0.6s ease-out;
 }
 
 .stat-number {

@@ -114,3 +114,30 @@ body {
 .bg-gradient {
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
+
+/* 添加全局动画样式 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-fadeInUp {
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}

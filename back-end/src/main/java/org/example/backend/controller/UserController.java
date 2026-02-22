@@ -54,6 +54,22 @@ public class UserController {
     }
 
     /*
+    * 根据id查询指定用户信息（管理员专用）
+    * */
+    @GetMapping("/selectUserById/{id}")
+    public RestBean<LoginResultVO> selectUserById(@PathVariable("id") Long id, HttpServletRequest request){
+        Long userId = (Long) request.getAttribute("userId");
+        if(userId == null) return RestBean.failure("身份不合法");
+        // 获取当前用户信息
+        LoginResultVO currentUser = userService.selectUserById(userId);
+        // 检查是否为管理员
+        if(!"管理员".equals(currentUser.getRole())) {
+            return RestBean.failure("权限不足，只有管理员可以查询用户信息");
+        }
+        return RestBean.success(userService.selectUserById(id));
+    }
+
+    /*
     * 更新用户信息
     * */
     @PostMapping("/updateUser")
@@ -73,8 +89,7 @@ public class UserController {
     * */
     @GetMapping("/selectAllUser")
     public RestBean<List<LoginResultVO>> selectAllUser(HttpServletRequest request){
-        Long userId = (Long) request.getAttribute("userId" +
-                "");
+        Long userId = (Long) request.getAttribute("userId");
         if(userId!=1) return RestBean.failure("权限不足");
         return RestBean.success(userService.selectAllUser());
     }

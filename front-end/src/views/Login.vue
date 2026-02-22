@@ -1,13 +1,130 @@
+<template>
+  <contextHolder />
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <!-- 动态背景网格 + 光晕 -->
+    <div class="absolute inset-0"></div>
+
+  <!-- 抽象漂浮粒子 (伪元素用div模拟) -->
+  <div class="absolute top-20 left-[10%] w-72 h-72 bg-blue-500/30 rounded-full blur-[100px] animate-pulse"></div>
+  <div class="absolute bottom-20 right-[10%] w-80 h-80 bg-purple-500/30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+  <div class="absolute top-1/3 right-1/4 w-64 h-64 bg-cyan-500/20 rounded-full blur-[90px] animate-pulse delay-500"></div>
+
+  <!-- 登录卡片 — 现代玻璃质感 + 微边框 -->
+  <div class="relative z-10 w-full max-w-md p-8 space-y-8 backdrop-blur-xl bg-white/10 dark:bg-black/20 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/20 dark:border-white/10">
+
+    <!-- 标题区域：极简 + 发光字 -->
+    <div class="text-center">
+      <h1 class="text-4xl font-light tracking-wider text-white drop-shadow-lg">
+        <span class="font-semibold bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">WELCOME</span>
+      </h1>
+      <p class="mt-3 text-sm font-extralight text-white/70">FallenLeavesMall</p>
+    </div>
+
+    <!-- 表单区域 -->
+    <form @submit.prevent="handleLogin" class="space-y-5">
+      <!-- 账号输入 —— 极简下划线风格，悬浮动效 -->
+      <div class="group">
+        <label for="account" class="block mb-1 text-xs font-medium tracking-wide text-white/60 group-focus-within:text-white/90 transition-colors">账号</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="account"
+            v-model="form.account"
+            required
+            class="w-full py-3 bg-transparent border-b-2 border-white/20 text-white placeholder-white/30 text-lg outline-none focus:border-blue-400 transition-all duration-300 peer"
+            placeholder=" "
+          />
+          <span class="absolute left-0 -bottom-[1px] w-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-500 peer-focus:w-full"></span>
+        </div>
+      </div>
+
+      <!-- 密码输入 —— 同样下划线 + 显示切换 -->
+      <div class="group">
+        <label for="password" class="block mb-1 text-xs font-medium tracking-wide text-white/60 group-focus-within:text-white/90 transition-colors">密码</label>
+        <div class="relative">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            v-model="form.password"
+            required
+            class="w-full py-3 bg-transparent border-b-2 border-white/20 text-white placeholder-white/30 text-lg outline-none focus:border-blue-400 transition-all duration-300 peer pr-10"
+            placeholder=" "
+          />
+          <span class="absolute left-0 -bottom-[1px] w-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-500 peer-focus:w-full"></span>
+
+          <!-- 眼睛图标优化 -->
+          <button
+            type="button"
+            @click="togglePasswordVisibility"
+            class="absolute right-0 bottom-3 text-white/50 hover:text-white/90 transition-colors"
+          >
+            <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 协议同意 + 忘记密码 在一行 -->
+      <div class="flex items-center justify-between text-sm">
+        <label class="flex items-center gap-2 text-white/70 cursor-pointer group">
+          <input
+            type="checkbox"
+            v-model="form.agreement"
+            required
+            class="w-4 h-4 rounded border-white/30 bg-white/10 checked:bg-gradient-to-r from-blue-500 to-purple-500 focus:ring-0 focus:ring-offset-0 text-transparent"
+          />
+          <span class="group-hover:text-white/90 transition">同意条款</span>
+        </label>
+        <a href="#" class="text-white/50 hover:text-white/90 transition-all border-b border-transparent hover:border-white/30 text-xs">忘记密码?</a>
+      </div>
+
+      <!-- 错误信息 现代警示框 -->
+      <div v-if="errorMessage" class="px-4 py-3 text-sm text-amber-200 bg-amber-500/20 border border-amber-500/30 rounded-xl backdrop-blur-sm">
+        <i class="fas fa-exclamation-circle mr-2"></i> {{ errorMessage }}
+      </div>
+
+      <!-- 登录按钮 — 玻璃态 + 悬浮光效 -->
+      <button
+        type="submit"
+        :disabled="isLoading"
+        class="relative w-full py-3.5 mt-6 font-medium text-white rounded-xl bg-gradient-to-r from-blue-500/80 to-purple-500/80 backdrop-blur-sm border border-white/30 shadow-[0_8px_20px_rgba(0,0,0,0.3)] hover:from-blue-500 hover:to-purple-500 hover:shadow-[0_8px_25px_rgba(168,85,247,0.4)] disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 group overflow-hidden"
+      >
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
+            <span>{{ isLoading ? '登录中...' : '进入' }}</span>
+            <i v-if="!isLoading" class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </span>
+        <!-- 按钮内部光晕 -->
+        <span class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+      </button>
+    </form>
+
+    <!-- 注册引导 -->
+    <div class="text-center text-white/50 text-sm">
+      还没有账号？
+      <a href="#" class="text-white/90 font-medium border-b border-white/30 hover:text-white transition">立即注册</a>
+    </div>
+
+    <!-- 装饰分隔线 现代方式 -->
+    <div class="flex items-center gap-3 text-white/30 text-xs">
+      <span class="h-px flex-1 bg-white/20"></span>
+      <span>MODERN SPACE</span>
+      <span class="h-px flex-1 bg-white/20"></span>
+    </div>
+  </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, reactive } from 'vue';
-import {message} from "ant-design-vue";
+import { message } from "ant-design-vue";
 import { useThemeStore } from '../stores/theme';
 import router from "@/router/index.js";
 import tokenManager from '../utils/tokenManager';
-import {post} from "@/net/index.js";
+import { post } from "@/net/index.js";
 
 const themeStore = useThemeStore();
-const [messageApi, contextHolder] = message.useMessage()
+const [messageApi, contextHolder] = message.useMessage();
+
 // 表单数据
 const form = reactive({
   account: '',
@@ -27,22 +144,18 @@ const togglePasswordVisibility = () => {
 
 // 处理登录
 const handleLogin = async () => {
-  // 重置错误信息
   errorMessage.value = '';
 
-  // 表单验证
   if (!form.account.trim()) {
-    errorMessage.value = '请输入账号';
+    errorMessage.value = '账号不能为空';
     return;
   }
-
   if (!form.password) {
-    errorMessage.value = '请输入密码';
+    errorMessage.value = '密码不能为空';
     return;
   }
-
   if (!form.agreement) {
-    errorMessage.value = '请阅读并同意用户协议和隐私政策';
+    errorMessage.value = '请同意用户协议';
     return;
   }
 
@@ -55,38 +168,40 @@ const handleLogin = async () => {
         account: form.account,
         password: form.password
       },
-      // success 回调
+      // success
       (message, data) => {
-        console.log("数据：", data);
-        // Access Token 存内存
         tokenManager.setAccessToken(data.accessToken);
-        messageApi.success(message);
+        if (data && (data.id != null || data.username != null)) {
+          tokenManager.setUserInfo(data);
+        }
+        messageApi.success({
+          content: message,
+          icon: () => '🎉',
+        });
         setTimeout(() => {
-          // 登录成功跳转个人页面
           router.push('/User');
         }, 500);
       },
-      // failure 回调 - 处理业务失败
-      (message) => {
-        console.error('登录业务失败:', message);
-        errorMessage.value = message || '登录失败';
-        messageApi.error(message || '登录失败');
+      // failure
+      (msg) => {
+        console.error('登录业务失败:', msg);
+        errorMessage.value = msg || '登录失败';
+        messageApi.error(msg || '登录失败');
       },
-      // error 回调 - 处理网络/系统错误
+      // error
       () => {
         console.error('登录系统错误');
         errorMessage.value = '网络错误，请稍后重试';
         messageApi.error('网络错误，请稍后重试');
       },
-      false // skip401 - 登录接口不需要跳过401处理
+      false
     );
 
   } catch (error) {
     console.error('登录异常:', error);
     errorMessage.value = '登录失败，请检查账号密码是否正确';
   } finally {
-    // 注意：这里不需要重置表单和 isLoading，应该在回调中处理
-    // 或者根据实际情况调整
+    // 延迟清空密码和loading状态
     setTimeout(() => {
       form.password = '';
       isLoading.value = false;
@@ -95,121 +210,11 @@ const handleLogin = async () => {
 };
 </script>
 
-<template>
-  <contextHolder />
-  <div class="min-h-screen flex items-center justify-center bg-cover bg-center relative" style="background-image: url('https://p26-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/33ed8bf4564549cea7236751c1ee5596~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260207155018B420D0EB0CC79C14C28A&rrcfp=f06b921b&x-expires=1773042716&x-signature=hM8fBG1gStC5bQSCektFyf9hdyQ%3D');">
-    <!-- 背景遮罩 -->
-    <div class="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
-
-    <!-- 登录卡片 -->
-    <div class="relative z-10 w-full max-w-md p-8 space-y-8 bg-white bg-opacity-90 dark:bg-black dark:bg-opacity-80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800">
-      <!-- 标题 -->
-      <div class="text-center">
-        <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-          系统登录
-        </h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">请输入您的账号和密码</p>
-      </div>
-
-      <!-- 登录表单 -->
-      <form @submit.prevent="handleLogin" class="space-y-6">
-        <!-- 账号输入框 -->
-        <div>
-          <label for="account" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">账号</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">
-              <i class="fa fa-user"></i>
-            </span>
-            <input
-              type="text"
-              id="account"
-              v-model="form.account"
-              required
-              class="w-full pl-10 pr-4 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-black bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
-              placeholder="请输入账号"
-            />
-          </div>
-        </div>
-
-        <!-- 密码输入框 -->
-        <div>
-          <label for="password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">密码</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">
-              <i class="fa fa-lock"></i>
-            </span>
-            <input
-              :type="showPassword ? 'text' : 'password'"
-              id="password"
-              v-model="form.password"
-              required
-              class="w-full pl-10 pr-10 py-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-black bg-opacity-50 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 transform focus:scale-[1.02]"
-              placeholder="请输入密码"
-            />
-            <button
-              type="button"
-              @click="togglePasswordVisibility"
-              class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-            >
-              <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- 协议同意 -->
-        <div class="flex items-start">
-          <div class="flex items-center h-5">
-            <input
-              id="agreement"
-              type="checkbox"
-              v-model="form.agreement"
-              required
-              class="w-4 h-4 text-blue-600 bg-white dark:bg-black border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-black"
-            />
-          </div>
-          <label for="agreement" class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-            我已阅读并同意 <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">用户协议</a> 和 <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">隐私政策</a>
-          </label>
-        </div>
-
-        <!-- 错误信息 -->
-        <div v-if="errorMessage" class="p-3 text-sm text-red-400 bg-red-100 dark:bg-red-900 dark:bg-opacity-20 border border-red-200 dark:border-red-800 rounded-lg">
-          {{ errorMessage }}
-        </div>
-
-        <!-- 登录按钮 -->
-        <button
-          type="submit"
-          :disabled="isLoading"
-          class="w-full py-3 font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          <span v-if="isLoading" class="flex items-center justify-center">
-            <i class="fa fa-spinner fa-spin mr-2"></i> 登录中...
-          </span>
-          <span v-else>登录</span>
-        </button>
-      </form>
-
-      <!-- 其他选项 -->
-      <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
-        <a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-400 transition-colors">忘记密码?</a>
-        <a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-400 transition-colors">注册账号</a>
-      </div>
-    </div>
-
-    <!-- 装饰元素 -->
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-      <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500 rounded-full filter blur-[120px] opacity-15 animate-pulse delay-700"></div>
-    </div>
-  </div>
-</template>
-
 <style>
-/* 导入Font Awesome图标库 */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+/* 导入Font Awesome 6 (免费版) */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
-/* 全局样式 */
+/* 基础重置 & 字体 */
 * {
   margin: 0;
   padding: 0;
@@ -217,73 +222,56 @@ const handleLogin = async () => {
 }
 
 body {
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0f0f1a;
 }
 
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
+/* 自定义复选框样式 (现代简洁) */
+input[type="checkbox"] {
+  appearance: none;
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 4px;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-
-/* 动画效果 */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* 输入框聚焦动画 */
-input:focus {
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-}
-
-/* 按钮点击波纹效果 */
-button {
-  position: relative;
-  overflow: hidden;
-}
-
-button:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #3b82f6, #a855f7);
+  border-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+  background-size: 70%;
+  background-position: center;
   background-repeat: no-repeat;
-  background-position: 50%;
-  transform: scale(10, 10);
-  opacity: 0;
-  transition: transform .5s, opacity 1s;
 }
 
-button:active:after {
-  transform: scale(0, 0);
-  opacity: .3;
-  transition: 0s;
+/* 输入框 autofill 背景修正 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: white;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4);
 }
 </style>

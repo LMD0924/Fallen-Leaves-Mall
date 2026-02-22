@@ -1,5 +1,6 @@
 package org.example.merchantbackend.service;
 
+import org.example.merchantbackend.controller.VO.MerchantControllerVO;
 import org.example.merchantbackend.entity.Merchant;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public interface MerchantService {
     Integer updateMerchant(Merchant merchant,Long userId);
 
     //查询商家信息
-    List<Merchant> selectMerchant(Merchant merchant,Long userId);
+    List<MerchantControllerVO> selectMerchant(Merchant merchant, Long userId);
 
-    //查询申请进度
-    Merchant queryApplyProgress(Long userId);
+    // 逻辑删除商家（仅管理员/测试员）
+    Integer deleteMerchant(Long id, Long userId);
 }

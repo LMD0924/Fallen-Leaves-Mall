@@ -38,6 +38,12 @@ const router = createRouter({
           name:'用户管理',
           component:()=>import('@/components/BEManagement/UserManagement.vue'),
           meta: { requiresAuth: true }
+        },
+        {
+          path:'/MerchantManagement',
+          name:'商家管理',
+          component:()=>import('@/components/BEManagement/MerchantManagement.vue'),
+          meta: { requiresAuth: true }
         }
       ]
     }

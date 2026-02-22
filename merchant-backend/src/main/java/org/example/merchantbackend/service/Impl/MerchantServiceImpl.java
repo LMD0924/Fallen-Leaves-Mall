@@ -1,22 +1,27 @@
 package org.example.merchantbackend.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
 import org.example.backend.mapper.UserMapper;
+import org.example.merchantbackend.controller.VO.MerchantControllerVO;
 import org.example.merchantbackend.entity.Merchant;
 import org.example.merchantbackend.mapper.MerchantMapper;
 import org.example.merchantbackend.service.MerchantService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /*
  * @Author:总会落叶
  * @Date:2026/2/9
- * @Description:
+ * @Description: 商家服务实现（MyBatis-Plus）
  */
 @Service
 public class MerchantServiceImpl implements MerchantService {
@@ -26,76 +31,102 @@ public class MerchantServiceImpl implements MerchantService {
     @Autowired
     private UserMapper userMapper;
 
-    /*
-    * 申请为商家
-    * */
     @Override
     @Transactional
     public Integer applyMerchant(Merchant merchant) {
-        // 1. 校验参数：用户ID不能为空
         if (merchant == null || merchant.getUserId() == null) {
             throw new RuntimeException("用户ID不能为空");
         }
 
-        // 2. 校验用户是否存在
         LoginResultVO user = userMapper.selectUserById(merchant.getUserId());
         if (user == null) {
             throw new RuntimeException("用户不存在，无法申请成为商家");
         }
 
-        // 4. 校验用户是否已成为商家
-        List<Merchant> merchantList = merchantMapper.selectMerchants(merchant);
-        // 注意：List判断是否为空要用 !isEmpty()，而非 !=null（空List也是非null）
-        if (merchantList != null && !merchantList.isEmpty()) {
+        LambdaQueryWrapper<Merchant> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Merchant::getUserId, merchant.getUserId());
+        Long count = merchantMapper.selectCount(wrapper);
+        if (count != null && count > 0) {
             throw new RuntimeException("该用户已申请成为商家，无需重复申请");
         }
 
-        // 5. 核心逻辑：插入商家申请数据（补充商家默认状态：待审核）
-        merchant.setStatus(0); // 比如：0->待审核；1->已通过；2->已拒绝；3->已禁用
-        //通过之后将用户表的role改为商家
-        User user1 = new User();
-        user1.setRole("商家");
-        user1.setId(merchant.getUserId());
-        userMapper.updateUser(user1);
-        merchantMapper.applyMerchant(merchant); // 需在MerchantMapper中添加insert方法
-
-        // 6. 返回成功提示
-        return 1;
+        merchant.setStatus(0); // 待审核
+        merchant.setIsDeleted(0);
+        int rows = merchantMapper.insert(merchant);
+        return rows > 0 ? 1 : 0;
     }
 
-    /*
-    * 修改商家信息
-    * */
     @Override
     @Transactional
-    public Integer updateMerchant(Merchant merchant,Long userId) {
-        //先验证有无权限修改
+    public Integer updateMerchant(Merchant merchant, Long userId) {
         LoginResultVO user = userMapper.selectUserById(userId);
-        if(!Objects.equals(user.getRole(), "管理员") && !Objects.equals(user.getRole(), "测试员") && !Objects.equals(user.getRole(), "商家")){
+        if (user == null) {
+            throw new RuntimeException("token不合法，无法操作");
+        }
+        if (!Objects.equals(user.getRole(), "管理员") && !Objects.equals(user.getRole(), "测试员") && !Objects.equals(user.getRole(), "商家")) {
             throw new RuntimeException("无权限修改");
         }
-        merchantMapper.updateMerchant(merchant);
-        return 1;
-    }
 
-    @Override
-    public List<Merchant> selectMerchant(Merchant merchant,Long userId) {
-        //先验证是否有权限查询
-        LoginResultVO user = userMapper.selectUserById(userId);
-        if(!Objects.equals(user.getRole(), "管理员") && !Objects.equals(user.getRole(), "测试员") && !Objects.equals(user.getRole(), "商家")){
-            throw new RuntimeException("无权限查询");
+        int rows = merchantMapper.updateById(merchant);
+        if (rows > 0 && merchant.getStatus() != null && merchant.getStatus() == 1) {
+            User user1 = new User();
+            user1.setId(merchant.getUserId());
+            user1.setRole("商家");
+            userMapper.updateUser(user1);
         }
-        return merchantMapper.selectMerchants(merchant);
+        return rows > 0 ? 1 : 0;
     }
 
-
-    //查询申请进度
     @Override
-    public Merchant queryApplyProgress(Long userId) {
-        Merchant merchant = new Merchant();
-        merchant.setUserId(userId);
-        List<Merchant> merchantList = merchantMapper.selectMerchants(merchant);
-        return merchantList.get(0);
+    public List<MerchantControllerVO> selectMerchant(Merchant merchant, Long userId) {
+        LoginResultVO user = userMapper.selectUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("token不合法，无法操作");
+        }
+
+        LambdaQueryWrapper<Merchant> wrapper = new LambdaQueryWrapper<>();
+        if (merchant != null) {
+            if (merchant.getId() != null) {
+                wrapper.eq(Merchant::getId, merchant.getId());
+            }
+            if (merchant.getUserId() != null) {
+                wrapper.eq(Merchant::getUserId, merchant.getUserId());
+            }
+            if (merchant.getMerchantType() != null) {
+                wrapper.eq(Merchant::getMerchantType, merchant.getMerchantType());
+            }
+            if (StringUtils.hasText(merchant.getMerchantName())) {
+                wrapper.like(Merchant::getMerchantName, merchant.getMerchantName());
+            }
+            if (merchant.getStatus() != null) {
+                wrapper.eq(Merchant::getStatus, merchant.getStatus());
+            }
+        }
+        wrapper.orderByDesc(Merchant::getCreateTime);
+
+        List<Merchant> list = merchantMapper.selectList(wrapper);
+        return list.stream().map(this::toVO).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public Integer deleteMerchant(Long id, Long userId) {
+        LoginResultVO user = userMapper.selectUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("token不合法，无法操作");
+        }
+        if (!Objects.equals(user.getRole(), "管理员") && !Objects.equals(user.getRole(), "测试员")) {
+            throw new RuntimeException("仅管理员或测试员可删除商家");
+        }
+        // 逻辑删除（MyBatis-Plus @TableLogic 会转为 update is_deleted=1）
+        int rows = merchantMapper.deleteById(id);
+        return rows > 0 ? 1 : 0;
+    }
+
+    private MerchantControllerVO toVO(Merchant entity) {
+        MerchantControllerVO vo = new MerchantControllerVO();
+        BeanUtils.copyProperties(entity, vo);
+        vo.setLicenseImage(entity.getLicenseImage());
+        return vo;
+    }
 }

@@ -161,11 +161,15 @@ function get(url, params = null, success, failure = defaultFailure, error = defa
     url,
     method: 'get',
     params,
-    headers: {
-      "Authorization": tokenManager.getAccessToken() ? `Bearer ${tokenManager.getAccessToken()}` : ''
-    },
+    headers: {},
     withCredentials: true
   };
+  
+  // 只有当token存在时才设置Authorization头
+  const token = tokenManager.getAccessToken();
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
 
   return axios(config)
     .then(({ data: responseData }) => {

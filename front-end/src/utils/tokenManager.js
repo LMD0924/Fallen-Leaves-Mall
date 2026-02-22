@@ -55,6 +55,7 @@ class TokenManager {
 
     // 只存非敏感信息到localStorage
     const safeInfo = {
+      id: info.id,
       username: info.username,
       avatar: info.avatar,
       role: info.role,

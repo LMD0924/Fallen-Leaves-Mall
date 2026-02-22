@@ -8,19 +8,29 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/VO/LoginResultVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/VO/LoginResultVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/AuthServiceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/AuthServiceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/JwtTokenUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/TokenRedisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/util/TokenRedisUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/SystemSettings.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/SystemSettings.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/net/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/net/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/utils/tokenManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/utils/tokenManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/views/User.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/User.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/resources/mapper/MerchantMapper.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,14 +135,17 @@
       <recent name="E:\GitHub\Fallen-Leaves-Mall" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\GitHub\Fallen-Leaves-Mall\front-end\src\components" />
+      <recent name="E:\GitHub\Fallen-Leaves-Mall\front-end\src\components\settings\common" />
       <recent name="E:\GitHub\Fallen-Leaves-Mall" />
       <recent name="E:\GitHub\Fallen-Leaves-Mall\back-end\src\main\java\org\example\backend" />
       <recent name="E:\GitHub\Fallen-Leaves-Mall\front-end\src\assets\css" />
-      <recent name="E:\GitHub\Fallen-Leaves-Mall\back-end\src\main\resources" />
-      <recent name="E:\GitHub\Fallen-Leaves-Mall\back-end\src\main\resources\static" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.example.merchantbackend.config" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="Spring Boot.MerchantBackendApplication">
     <configuration name="BackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="back-end" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.backend.BackEndApplication" />
@@ -193,6 +206,11 @@
       <workItem from="1770977531234" duration="11050000" />
       <workItem from="1771067210309" duration="4339000" />
       <workItem from="1771071625915" duration="1843000" />
+      <workItem from="1771566089605" duration="10919000" />
+      <workItem from="1771653847158" duration="7069000" />
+      <workItem from="1771661100616" duration="524000" />
+      <workItem from="1771661662599" duration="6648000" />
+      <workItem from="1771758450447" duration="3721000" />
     </task>
     <servers />
   </component>

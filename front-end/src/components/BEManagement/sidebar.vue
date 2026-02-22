@@ -46,7 +46,7 @@ const userMenus = [
 ]
 
 const merchantMenus = [
-  { path: '/merchants', name: '商家管理', icon: 'fa-store', badge: '3' },
+  { path: '/MerchantManagement', name: '商家管理', icon: 'fa-store', badge: '3' },
   { path: '/merchant-verify', name: '商家审核', icon: 'fa-check-circle', badge: '8' },
   { path: '/merchant-settle', name: '入驻申请', icon: 'fa-file-signature', badge: '5' },
   { path: '/merchant-level', name: '等级管理', icon: 'fa-ranking-star', badge: null }
