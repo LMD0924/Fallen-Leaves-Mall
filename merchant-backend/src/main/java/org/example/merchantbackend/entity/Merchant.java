@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.commonbackend.code.MerchantStatus;
 
 /*
  * @Author:总会落叶
@@ -34,7 +35,7 @@ public class Merchant {
     private String idCard; //身份证号
     private String idCardFront; //身份证正面图片
     private String idCardBack; //身份证背面图片
-    private Integer status; //审核状态
+    private MerchantStatus status; //审核状态
     private String rejectReason; //拒绝原因
     private String auditTime; //审核时间
     private String auditor; //审核人

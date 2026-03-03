@@ -25,6 +25,7 @@
     <modules>
         <module>back-end</module>
         <module>merchant-backend</module>
+        <module>common-backend</module>
     </modules>
 
     <!-- 属性定义 -->

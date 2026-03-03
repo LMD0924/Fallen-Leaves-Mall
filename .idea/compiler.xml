@@ -15,6 +15,7 @@
           <entry name="D:/环境配置/Maven/rely_on/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
         </processorPath>
         <module name="back-end" />
+        <module name="common-backend" />
         <module name="merchant-backend" />
       </profile>
     </annotationProcessing>
@@ -22,6 +23,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="back-end" options="-parameters" />
+      <module name="common-backend" options="-parameters" />
       <module name="merchant-backend" options="-parameters" />
     </option>
   </component>

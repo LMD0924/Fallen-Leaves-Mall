@@ -33,6 +33,12 @@
             <artifactId>back-end</artifactId>
             <version>${project.version}</version>
         </dependency>
+<!--        依赖common-backend-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-backend</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>

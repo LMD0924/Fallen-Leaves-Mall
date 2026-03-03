@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Fallen-Leaves-Mall.iml" filepath="$PROJECT_DIR$/Fallen-Leaves-Mall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-backend/common-backend.iml" filepath="$PROJECT_DIR$/common-backend/common-backend.iml" />
     </modules>
   </component>
 </project>

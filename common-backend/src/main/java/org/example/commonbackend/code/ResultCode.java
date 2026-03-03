@@ -1,4 +1,4 @@
-package org.example.backend.common;
+package org.example.commonbackend.code;
 
 import lombok.Getter;
 

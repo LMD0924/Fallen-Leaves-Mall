@@ -461,15 +461,59 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { get } from '@/net/index.js'
 
 const router = useRouter()
 
 // ============ 用户信息 ============
-const userInfo = reactive({
-  username: '刘梦达',
-  role: '超级管理员',
+const userInfo = ref({
+  username: '',
+  role: '',
   avatar: ''
 })
+
+const getUserInfo=()=>{
+get("api/user/selectUserById",{},(message,data)=>{
+  userInfo.value=data
+})
+}
+
+// 获取用户总数
+const getUserCount = () => {
+  get("api/user/selectUserCount", {}, (message, data) => {
+    statistics.value[0].value = data
+  }, (message) => {
+    console.error('获取用户总数失败:', message)
+  })
+}
+
+// 获取商家总数
+const getMerchantCount = () => {
+  get("http://localhost:8081/api/merchant/getMerchantCount", {}, (message, data) => {
+    statistics.value[1].value = data
+  }, (message) => {
+    console.error('获取商家总数失败:', message)
+  })
+}
+
+// 获取今日新增用户数
+const getTodayUserCount = () => {
+  get("api/user/selectUserCountByToday", {}, (message, data) => {
+    healthMetrics.value[0].value = data
+  }, (message) => {
+    console.error('获取今日新增用户数失败:', message)
+  })
+}
+
+// 获取今日新增商家数
+const getTodayMerchantCount = () => {
+  get("http://localhost:8081/api/merchant/getTodayMerchantCount", {}, (message, data) => {
+    healthMetrics.value[1].value = data
+    console.log("商家",data)
+  }, (message) => {
+    console.error('获取今日新增商家数失败:', message)
+  })
+}
 
 // ============ 问候与日期 ============
 const currentDate = computed(() => {
@@ -498,7 +542,7 @@ const randomTip = ref('昨日访问量增长12.3%，继续保持！')
 const statistics = ref([
   {
     label: '总用户数',
-    value: 12345,
+    value: 0,
     prefix: '',
     suffix: '',
     trend: 12.5,
@@ -509,7 +553,7 @@ const statistics = ref([
   },
   {
     label: '商家总数',
-    value: 856,
+    value: 0,
     prefix: '',
     suffix: '',
     trend: 8.2,
@@ -636,6 +680,11 @@ const formatDate = (dateString) => {
 
 // ============ 生命周期 ============
 onMounted(() => {
+  getUserInfo()
+  getUserCount()
+  getMerchantCount()
+  getTodayUserCount()
+  getTodayMerchantCount()
   // 随机欢迎语
   const tips = [
     '昨日访问量增长12.3%，继续保持！',

@@ -6,13 +6,14 @@ package org.example.backend.service;
  * @Description:
  */
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.backend.common.RestBean;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends IService<User> {
     //用户登录
     User login(String account, String password);
     //根据id查询用户
@@ -21,4 +22,8 @@ public interface UserService {
     List<LoginResultVO> selectAllUser();
     //修改用户信息
     Integer updateUser(User user);
+    //获取用户总数
+    Long selectUserCount();
+    //今日新增用户
+    Long selectUserCountByToday();
 }

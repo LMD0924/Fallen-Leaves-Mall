@@ -1,5 +1,6 @@
 package org.example.merchantbackend.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.merchantbackend.controller.VO.MerchantControllerVO;
 import org.example.merchantbackend.entity.Merchant;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @Date:2026/2/9
  * @Description:
  */
-public interface MerchantService {
+public interface MerchantService extends IService<Merchant> {
 
     //申请为商家
     Integer applyMerchant(Merchant merchant);
@@ -23,4 +24,10 @@ public interface MerchantService {
 
     // 逻辑删除商家（仅管理员/测试员）
     Integer deleteMerchant(Long id, Long userId);
+
+    //获取商家总数
+    Long getMerchantCount();
+
+    //今日新增商家
+    Long getTodayMerchantCount();
 }

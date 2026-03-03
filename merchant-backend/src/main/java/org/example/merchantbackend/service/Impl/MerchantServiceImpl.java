@@ -1,9 +1,12 @@
 package org.example.merchantbackend.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.example.backend.common.RestBean;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
 import org.example.backend.mapper.UserMapper;
+import org.example.commonbackend.code.MerchantStatus;
 import org.example.merchantbackend.controller.VO.MerchantControllerVO;
 import org.example.merchantbackend.entity.Merchant;
 import org.example.merchantbackend.mapper.MerchantMapper;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  * @Description: 商家服务实现（MyBatis-Plus）
  */
 @Service
-public class MerchantServiceImpl implements MerchantService {
+public class MerchantServiceImpl extends ServiceImpl<MerchantMapper,Merchant> implements MerchantService {
 
     @Autowired
     private MerchantMapper merchantMapper;
@@ -50,7 +53,7 @@ public class MerchantServiceImpl implements MerchantService {
             throw new RuntimeException("该用户已申请成为商家，无需重复申请");
         }
 
-        merchant.setStatus(0); // 待审核
+        merchant.setStatus(MerchantStatus.PENDING_REVIEW); // 待审核
         merchant.setIsDeleted(0);
         int rows = merchantMapper.insert(merchant);
         return rows > 0 ? 1 : 0;
@@ -68,7 +71,7 @@ public class MerchantServiceImpl implements MerchantService {
         }
 
         int rows = merchantMapper.updateById(merchant);
-        if (rows > 0 && merchant.getStatus() != null && merchant.getStatus() == 1) {
+        if (rows > 0 && merchant.getStatus() != null && Objects.equals(merchant.getStatus(), MerchantStatus.APPROVED)) {
             User user1 = new User();
             user1.setId(merchant.getUserId());
             user1.setRole("商家");
@@ -128,5 +131,20 @@ public class MerchantServiceImpl implements MerchantService {
         BeanUtils.copyProperties(entity, vo);
         vo.setLicenseImage(entity.getLicenseImage());
         return vo;
+    }
+
+    //获取商家总数
+    @Override
+    public Long getMerchantCount(){
+        return merchantMapper.selectCount(null);
+    }
+
+    @Override
+    public Long getTodayMerchantCount(){
+        return lambdaQuery()
+                .eq(Merchant::getStatus, MerchantStatus.APPROVED)
+                .ge(Merchant::getCreateTime, RestBean.getTodayStartTime())
+                .le(Merchant::getCreateTime, RestBean.getTodayEndTime())
+                .count();
     }
 }

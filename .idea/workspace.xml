@@ -5,32 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9a3eec8-dd2f-4d5d-b495-42de07ece141" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/common/RestBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/common/RestBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/common/ResultCode.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/VO/LoginResultVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/VO/LoginResultVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/mapper/UserMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/SystemSettings.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/SystemSettings.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/net/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/net/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/utils/tokenManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/utils/tokenManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/User.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/User.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/merchant-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/ShopController.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/ShopController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/resources/mapper/MerchantMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,10 +51,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="JavaScript File" />
-        <option value="Interface" />
         <option value="Vue Composition API Component" />
+        <option value="Kotlin Enum" />
+        <option value="AnnotationType" />
+        <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -93,45 +93,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BackEndApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MerchantBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/GitHub/Fallen-Leaves-Mall&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\刘梦达\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.BackEndApplication.executor": "Run",
+    "Spring Boot.CommonBackendApplication.executor": "Run",
+    "Spring Boot.MerchantBackendApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/GitHub/Fallen-Leaves-Mall/common-backend/src/main/java/org/example/commonbackend/code",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "editing.templates",
+    "ts.external.directory.path": "C:\\Users\\刘梦达\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;vue.recent.templates&quot;: [
-      &quot;Vue Composition API Component&quot;
+    "vue.recent.templates": [
+      "Vue Composition API Component"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\GitHub\Fallen-Leaves-Mall\common-backend\src\main\java\org\example\commonbackend\code" />
       <recent name="E:\GitHub\Fallen-Leaves-Mall" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -142,13 +145,44 @@
       <recent name="E:\GitHub\Fallen-Leaves-Mall\front-end\src\assets\css" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.example.commonbackend" />
       <recent name="org.example.merchantbackend.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.MerchantBackendApplication">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="BackEndApplication" value="STOPPED" />
+              <entry key="CommonBackendApplication" value="STOPPED" />
+              <entry key="MerchantBackendApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.CommonBackendApplication">
     <configuration name="BackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="back-end" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.backend.BackEndApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CommonBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="common-backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.commonbackend.CommonBackendApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -172,6 +206,7 @@
     </configuration>
     <list>
       <item itemvalue="npm.dev" />
+      <item itemvalue="Spring Boot.CommonBackendApplication" />
       <item itemvalue="Spring Boot.BackEndApplication" />
       <item itemvalue="Spring Boot.MerchantBackendApplication" />
     </list>
@@ -211,6 +246,9 @@
       <workItem from="1771661100616" duration="524000" />
       <workItem from="1771661662599" duration="6648000" />
       <workItem from="1771758450447" duration="3721000" />
+      <workItem from="1772259555083" duration="8748000" />
+      <workItem from="1772355713880" duration="817000" />
+      <workItem from="1772438919734" duration="21072000" />
     </task>
     <servers />
   </component>

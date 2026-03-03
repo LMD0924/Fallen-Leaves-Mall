@@ -2,6 +2,7 @@ package org.example.merchantbackend.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.backend.common.RestBean;
+import org.example.commonbackend.code.MerchantStatus;
 import org.example.merchantbackend.controller.VO.MerchantControllerVO;
 import org.example.merchantbackend.entity.Merchant;
 import org.example.merchantbackend.service.MerchantService;
@@ -77,7 +78,7 @@ public class MerchantController {
     * 根据状态查询商家
     * */
     @GetMapping("/selectMerchantByStatus")
-    public RestBean<List<MerchantControllerVO>> selectMerchantByStatus(@RequestParam("status") Integer status,
+    public RestBean<List<MerchantControllerVO>> selectMerchantByStatus(@RequestParam("status") MerchantStatus status,
                                                              @RequestParam("userId") Long userId) {
         if(status == null || userId == null) return RestBean.failure("参数不合法");
         Merchant merchant = new Merchant();
@@ -128,4 +129,17 @@ public class MerchantController {
             return RestBean.failure(e.getMessage());
         }
     }
+
+    //获取商家总数
+    @GetMapping("/getMerchantCount")
+    public RestBean<Long> getMerchantCount(){
+        return RestBean.success(merchantService.getMerchantCount());
+    }
+
+    //今日新增商家
+    @GetMapping("/getTodayMerchantCount")
+    public RestBean<Long> getTodayMerchantCount(){
+        return RestBean.success(merchantService.getTodayMerchantCount());
+    }
+
 }

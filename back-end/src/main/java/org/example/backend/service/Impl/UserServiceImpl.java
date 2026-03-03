@@ -1,15 +1,17 @@
 package org.example.backend.service.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.backend.common.RestBean;
 import org.example.backend.controller.VO.LoginResultVO;
 import org.example.backend.entity.User;
 import org.example.backend.mapper.UserMapper;
 import org.example.backend.service.UserService;
+import org.example.commonbackend.annotation.OperationLog;
+import org.example.commonbackend.code.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 /*
  * @Author:总会落叶
@@ -17,7 +19,7 @@ import java.util.Objects;
  * @Description:
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 3. 验证账号是否被锁定
-        if(user.getLocked() != 0) {
+        if(user.getLocked() != UserStatus.NORMAL) {
             throw new RuntimeException("用户已被锁定");
         }
 
@@ -69,6 +71,24 @@ public class UserServiceImpl implements UserService {
         int result = userMapper.updateUser(user);
         if(result<0) throw new RuntimeException("更新失败");
         return result;
+    }
+
+    //获取用户总数
+    @Override
+    public Long selectUserCount(){
+        return lambdaQuery()
+                .eq(User::getLocked, UserStatus.NORMAL)
+                .count();
+    }
+
+    //今日新增用户
+    @Override
+    public Long selectUserCountByToday(){
+        return lambdaQuery()
+                .eq(User::getLocked,UserStatus.NORMAL)
+                .ge(User::getCreateTime,RestBean.getTodayStartTime())
+                .le(User::getCreateTime,RestBean.getTodayEndTime())
+                .count();
     }
 
 }

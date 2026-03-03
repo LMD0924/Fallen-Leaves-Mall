@@ -1,8 +1,11 @@
 package org.example.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.commonbackend.code.UserStatus;
+
 import java.time.LocalDateTime;
 
 /**
@@ -13,12 +16,13 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("user")
 public class User {
     private Long id;              // bigint - 主键ID
     private String account;       // varchar(50) - 登录名（唯一）
     private String password;      // varchar(50) - 登录密码
     private String username;      // varchar(50) - 昵称
-    private Integer locked;       // tinyint - 是否锁定（0-未锁定，1-锁定）
+    private UserStatus locked;       // tinyint - 是否锁定（0-未锁定，1-锁定）
     private LocalDateTime createTime; // datetime - 创建时间
     private LocalDateTime updateTime; // datetime - 更新时间
     private String email;         // varchar(255) - 邮箱

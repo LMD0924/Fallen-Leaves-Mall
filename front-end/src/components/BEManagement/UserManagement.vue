@@ -73,7 +73,7 @@ const fetchUsers = async () => {
 //管理员审核用户信息
 const reviewUser = async () =>{
   loading.value= true
-  post("api/user/updateUser",{
+  post("api/user/adminUpdateUser",{
   },(message,data)=>{
     messageApi.success(message)
   })
@@ -231,7 +231,7 @@ const saveUser = async () => {
   try {
     if (modalMode.value === 'edit') {
       // 编辑用户，调用updateUser接口
-      await post('/api/user/updateUser', userForm, (message, data) => {
+      await post('/api/user/adminUpdateUser', userForm, (message, data) => {
         ElMessage.success('用户信息更新成功')
         closeUserModal()
         fetchUsers() // 重新获取用户列表
@@ -262,7 +262,7 @@ const toggleUserStatus = async (user) => {
       locked: user.locked === 1 ? 0 : 1,
       status: user.status
     }
-    await post('/api/user/updateUser', updatedUser, (message, data) => {
+    await post('/api/user/adminUpdateUser', updatedUser, (message, data) => {
       ElMessage.success(user.locked === 1 ? '用户已启用' : '用户已禁用')
       fetchUsers() // 重新获取用户列表
     }, (message) => {

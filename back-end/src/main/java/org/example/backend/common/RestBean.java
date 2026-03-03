@@ -3,8 +3,11 @@ package org.example.backend.common;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.commonbackend.code.ResultCode;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /*
  * @Author:总会落叶
@@ -97,5 +100,18 @@ public class RestBean<T> implements Serializable {
     public RestBean<T> data(T data) {
         this.data = data;
         return this;
+    }
+
+    // 定义东八区时区常量
+    private static final ZoneOffset DEFAULT_ZONE_OFFSET = ZoneOffset.of("+8");
+    //获取今天开始时间
+    public static Long getTodayStartTime(){
+        LocalDateTime now = LocalDateTime.now();
+        return now.withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant(DEFAULT_ZONE_OFFSET).toEpochMilli();
+    }
+    //获取今天结束时间
+    public static Long getTodayEndTime(){
+        LocalDateTime now = LocalDateTime.now();
+        return now.withHour(23).withMinute(59).withSecond(59).withNano(999999999).toInstant(DEFAULT_ZONE_OFFSET).toEpochMilli();
     }
 }
