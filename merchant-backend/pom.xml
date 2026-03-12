@@ -27,13 +27,14 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
 
-<!--        依赖back-end模块-->
+        <!-- 依赖back-end模块 -->
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>back-end</artifactId>
             <version>${project.version}</version>
         </dependency>
-<!--        依赖common-backend-->
+
+        <!-- 依赖common-backend -->
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>common-backend</artifactId>
@@ -57,11 +58,11 @@
             <scope>test</scope>
         </dependency>
 
-<!--        lombok依赖-->
+        <!-- lombok依赖 -->
         <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <optional>true</optional>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -69,6 +70,23 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
+        <!-- Redis依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- OpenFeign 核心依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- 负载均衡器依赖 - 新添加 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -76,6 +94,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -3,6 +3,8 @@ package org.example.backend.config;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.example.backend.controller.VO.LoginResultVO;
+import org.example.backend.service.UserService;
 import org.example.backend.util.AuthServiceUtil;
 import org.example.backend.util.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /*
  * @Author:总会落叶
  * @Date:2026/2/6
- * @Description: 权限拦截器配置
+ * @Description: 全局权限拦截器配置
  */
+
 @Slf4j
 @Configuration
 public class AuthInterceptorConfig implements WebMvcConfigurer {
 
     @Autowired
     private AuthServiceUtil authServiceUtil;
+
+    @Autowired
+    private UserService userService;
 
     // 不需要认证的路径
     private static final String[] EXCLUDE_PATHS = {
@@ -68,6 +74,13 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
                         // 将用户ID存入请求上下文
                         RequestContext.setCurrentUserId(userId);
                         request.setAttribute("userId", userId);
+
+                        // 获取用户信息并设置username和role
+                        LoginResultVO userInfo = userService.selectUserById(userId);
+                        if (userInfo != null) {
+                            request.setAttribute("username", userInfo.getUsername());
+                            request.setAttribute("role", userInfo.getRole());
+                        }
 
                         return true;
                     }

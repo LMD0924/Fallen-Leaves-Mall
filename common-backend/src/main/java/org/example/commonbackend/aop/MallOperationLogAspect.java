@@ -173,9 +173,15 @@ public class MallOperationLogAspect  {
         // 从LogContext获取操作者信息（需要在调用前设置）
         log.setOperatorId(getStringFromContext("operatorId"));
         log.setOperatorName(getStringFromContext("operatorName"));
-        Integer operatorTypeCode = getIntegerFromContext("operatorType");
-        if (operatorTypeCode != null) {
-            log.setOperatorType(OperatorType.fromCode(operatorTypeCode));
+        
+        // 处理operatorType：可能是OperatorType枚举或Integer
+        Object operatorTypeObj = LogContext.get("operatorType");
+        if (operatorTypeObj != null) {
+            if (operatorTypeObj instanceof OperatorType) {
+                log.setOperatorType((OperatorType) operatorTypeObj);
+            } else if (operatorTypeObj instanceof Integer) {
+                log.setOperatorType(OperatorType.fromCode((Integer) operatorTypeObj));
+            }
         }
         log.setTenantId(getLongFromContext("tenantId"));
 

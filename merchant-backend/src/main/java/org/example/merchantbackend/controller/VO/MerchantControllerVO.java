@@ -1,5 +1,7 @@
 package org.example.merchantbackend.controller.VO;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 public class MerchantControllerVO implements Serializable {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id; //商家ID
     private Long userId; //用户ID
     private Integer merchantType; //商家类型

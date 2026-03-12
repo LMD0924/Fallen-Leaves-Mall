@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ import org.example.commonbackend.code.MerchantStatus;
 @TableName("merchant")
 public class Merchant {
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;//商家ID
     private Long userId;//用户ID
     private Integer merchantType; //商家类型

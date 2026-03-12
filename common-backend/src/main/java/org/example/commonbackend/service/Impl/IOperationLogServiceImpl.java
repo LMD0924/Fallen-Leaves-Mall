@@ -1,8 +1,10 @@
 package org.example.commonbackend.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.commonbackend.entity.MallOperationLog;
 import org.example.commonbackend.mapper.LogMapper;
 import org.example.commonbackend.redis.LogRedisKey;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -21,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * @Date:2026/3/3
  * @Description:
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IOperationLogServiceImpl extends ServiceImpl<LogMapper, MallOperationLog> implements IOperationLogService {
@@ -89,10 +94,70 @@ public class IOperationLogServiceImpl extends ServiceImpl<LogMapper, MallOperati
 
         // 按日期索引（用于按时间查询）
         String dateStr = log.getCreateTime().format(DATE_FORMAT);
-        String dateKey = String.format(LogRedisKey.LOG_DATE_INDEX, dateStr, log.getLogType());
+        String dateKey = String.format(LogRedisKey.LOG_DATE_INDEX, dateStr, log.getLogType().getCode());
         redisTemplate.opsForList().leftPush(dateKey, logUuid);
         redisTemplate.expire(dateKey, LogRedisKey.TTL_THREE_DAYS, TimeUnit.SECONDS);
         redisTemplate.opsForList().trim(dateKey, 0, 499); // 每天最多500条
+    }
+
+    /*
+     * 根据UUID查询日志
+     * */
+    public MallOperationLog getByUuid(String logUuid){
+        //先查redis
+        String detailKey = String.format(LogRedisKey.LOG_DETAIL,logUuid);
+        String logJson = redisTemplate.opsForValue().get(detailKey);
+
+        if(logJson != null){
+            log.debug("redis命中日志：{}",logUuid);
+            return JSON.parseObject(logJson,MallOperationLog.class);
+        }
+
+        //redis未命中，查数据库
+        MallOperationLog log = operationLogMapper.selectById(logUuid);
+
+        //如果查到并且是三天内的数据，回填redis
+        if(log!=null && isWithinThreeDays(log.getCreateTime())){
+            String json = JSON.toJSONString(log);
+            redisTemplate.opsForValue().set(detailKey,json,LogRedisKey.TTL_THREE_DAYS, TimeUnit.SECONDS);
+        }
+        return log;
+    }
+
+    /*
+     * 根据业务ID查询日志
+     * */
+    public List<MallOperationLog> getByBusinessId(String businessModule, String businessId, int limit){
+        String bizKey = String.format(LogRedisKey.LOG_BIZ_LIST,businessModule,businessId);
+
+        //从redis中获取UUID
+        List<String> logUuids = redisTemplate.opsForList().range(bizKey,0,limit-1);
+        if(logUuids!=null&& !logUuids.isEmpty()){
+            //批量获取详情
+            List<MallOperationLog> logs = new ArrayList<>();
+            for(String uuid: logUuids){
+                MallOperationLog log = getByUuid(uuid);
+                if(log!=null){
+                    logs.add(log);
+                }
+            }
+            return logs;
+        }
+
+        //redis未命中，查数据库
+        QueryWrapper<MallOperationLog> wrapper = new QueryWrapper<>();
+        wrapper.eq("business_module",businessModule)
+                .eq("business_id",businessId)
+                .last("limit "+limit);
+        return operationLogMapper.selectList(wrapper);
+    }
+
+    /*
+     * 判断时间是否在三天内
+     * */
+    private boolean isWithinThreeDays(LocalDateTime time) {
+        if (time == null) return false;
+        return time.isAfter(LocalDateTime.now().minusDays(3));
     }
 
 }

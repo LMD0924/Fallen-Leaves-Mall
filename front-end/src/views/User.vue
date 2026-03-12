@@ -208,8 +208,8 @@ const handleLogout = () => {
                 leave-to-class="opacity-0 -translate-y-2"
               >
                 <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-xl shadow-lg py-1 z-10 border border-gray-200 dark:border-gray-800">
-                  <a v-if="userInfo.role==='管理员'" href="/BEManagement" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:text-purple-600 dark:hover:text-purple-400 transition-all">
-                    <i class="fa fa-sliders-h w-5 mr-3"></i>管理员后台
+                  <a v-if="userInfo.role==='管理员'|| userInfo.role==='商家'" href="/BEManagement" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:text-purple-600 dark:hover:text-purple-400 transition-all">
+                    <i class="fa fa-sliders-h w-5 mr-3"></i>后台管理
                   </a>
                   <a href="/SystemSettings" class="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:text-purple-600 dark:hover:text-purple-400 transition-all">
                     <i class="fa fa-sliders-h w-5 mr-3"></i>系统设置

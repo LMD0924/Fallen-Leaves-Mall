@@ -5,9 +5,33 @@ spring:
     url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 0924
-    driver-class-name: com.mysql.cj.jdbc.Driver  # 确保有这一行
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 1
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
 logging:
   pattern:
     dateformat: yyyy年MM月dd日 HH:mm:ss.SSS
 server:
   port: 8081
+backend:
+  service:
+    url: http://localhost:8080  # back-end 服务地址
+
+# 启用 Feign
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

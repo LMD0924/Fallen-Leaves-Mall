@@ -73,8 +73,7 @@ const fetchUsers = async () => {
 //管理员审核用户信息
 const reviewUser = async () =>{
   loading.value= true
-  post("api/user/adminUpdateUser",{
-  },(message,data)=>{
+  await post("api/user/adminUpdateUser", {}, (message, data) => {
     messageApi.success(message)
   })
 }

@@ -46,3 +46,10 @@ server:
 mybatis-plus:
   configuration:
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+# 自定义配置：图片保存路径、访问前缀（重点修改端口为8082）
+file:
+  upload:
+    # 本地保存路径（建议使用绝对路径，如 Windows：D:/upload/images，Linux：/usr/upload/images）
+    path: ./upload/images/
+    # 访问前缀：端口改为8082
+    access-path: http://localhost:8082/images/

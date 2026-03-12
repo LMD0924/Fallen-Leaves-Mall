@@ -23,4 +23,12 @@ public enum MerchantStatus {
         this.code = code;
         this.desc = desc;
     }
+    public static MerchantStatus fromCode(int code) {
+        for (MerchantStatus status : MerchantStatus.values()) {
+            if (status.getCode() == code) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("未知状态码: " + code);
+    }
 }

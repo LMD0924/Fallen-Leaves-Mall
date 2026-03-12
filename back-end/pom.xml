@@ -19,7 +19,7 @@
 
     <!-- 依赖（不要写版本号！从父项目继承） -->
     <dependencies>
-<!--        依赖common-backend-->
+        <!--        依赖common-backend-->
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>common-backend</artifactId>

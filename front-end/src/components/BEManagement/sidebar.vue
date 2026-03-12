@@ -50,8 +50,8 @@ const merchantMenus = [
 ]
 
 const productMenus = [
-  { path: '/shops', name: '店铺管理', icon: 'fa-shop', badge: null },
-  { path: '/shop-verify', name: '店铺审核', icon: 'fa-clipboard-check', badge: '6' },
+  { path: '/ShopManagement', name: '店铺管理', icon: 'fa-shop', badge: null },
+  { path: '/ApplyShop', name: '店铺申请', icon: 'fa-clipboard-check', badge: '6' },
   { path: '/shop-category', name: '店铺分类', icon: 'fa-tags', badge: null },
   { path: '/products', name: '商品管理', icon: 'fa-box', badge: '24' },
   { path: '/product-category', name: '商品分类', icon: 'fa-sitemap', badge: null },
@@ -60,8 +60,8 @@ const productMenus = [
 ]
 
 const systemMenus = [
-  { path: '/settings', name: '系统设置', icon: 'fa-cog', badge: null },
-  { path: '/logs', name: '系统日志', icon: 'fa-file-lines', badge: null },
+  { path: '/SystemSettings', name: '系统设置', icon: 'fa-cog', badge: null },
+  { path: '/Log', name: '系统日志', icon: 'fa-file-lines', badge: null },
   { path: '/backup', name: '备份恢复', icon: 'fa-database', badge: null }
 ]
 

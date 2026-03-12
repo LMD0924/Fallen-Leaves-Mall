@@ -46,6 +46,7 @@
         where id = #{id}
     </update>
 
+
     <!--根据账号查询用户信息-->
     <select id="selectUserByAccount" resultType="org.example.backend.entity.User">
         select * from user where account = #{account}
@@ -55,4 +56,5 @@
     <select id="selectAllUser" resultMap="LoginResultVOMap">
             select id, username, account, email, phone, avatar, role, status, locked, create_time, update_time from user
     </select>
+
 </mapper>

@@ -44,7 +44,28 @@ const router = createRouter({
           name:'商家管理',
           component:()=>import('@/components/BEManagement/MerchantManagement.vue'),
           meta: { requiresAuth: true }
-        }
+        },
+        {
+          path:'/ShopManagement',
+          name:'店铺管理',
+          component:()=>import('@/components/BEManagement/ShopManagement.vue'),
+        },
+        {
+          path:'/ApplyShop',
+          name:'店铺申请',
+          component:()=>import('@/components/BEManagement/ApplyShop.vue'),
+        },
+        {
+          path:'/log',
+          name:'日志管理',
+          component:()=>import('@/views/Log.vue'),
+        },
+        {
+          path:'/SystemSettings',
+          name:'系统设置',
+          component:()=>import('@/components/SystemSettings.vue'),
+          meta: { requiresAuth: true }
+        },
       ]
     }
   ],

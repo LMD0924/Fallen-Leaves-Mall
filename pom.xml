@@ -46,11 +46,21 @@
         <json.version>2.0.43</json.version>
         <hutool.version>5.8.20</hutool.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <spring-cloud.version>2025.0.1</spring-cloud.version>
     </properties>
 
     <!-- 依赖管理（子模块从这里继承版本） -->
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Cloud BOM - 这是关键 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Spring Boot Starters -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -125,18 +135,18 @@
                 <version>${json.version}</version>
             </dependency>
 
-            <!-- Hutool 核心工具包（包含 IdUtil） -->
+            <!-- Hutool -->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
 
-            <!-- MyBatis-Plus 核心依赖（整合 Spring Boot） -->
+            <!-- MyBatis-Plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version> <!-- 推荐使用最新稳定版，可去官网查看 -->
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <!-- 测试依赖 -->

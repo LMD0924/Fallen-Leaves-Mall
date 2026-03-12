@@ -19,8 +19,25 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: -1ms
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB        # 单个文件最大大小
+      max-request-size: 100MB    # 单次请求最大文件大小
+      enabled: true              # 开启文件上传支持
+
 mybatis-plus:
   configuration:
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
 server:
   port: 8082
+logging:
+  pattern:
+    dateformat: yyyy年MM月dd日 HH:mm:ss.SSS
+# 自定义配置：图片保存路径、访问前缀（重点修改端口为8082）
+file:
+  upload:
+    # 本地保存路径（建议使用绝对路径，如 Windows：D:/upload/images，Linux：/usr/upload/images）
+    path: ./upload/images/
+    # 访问前缀：端口改为8082
+    access-path: http://localhost:8082/images/

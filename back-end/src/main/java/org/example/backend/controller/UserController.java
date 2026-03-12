@@ -52,6 +52,18 @@ public class UserController {
         return RestBean.success(userService.selectUserById(userId));
     }
 
+    /**
+     * 返回当前用户id
+     * @param
+     * @param request
+     * @return
+     */
+    @GetMapping("/getUserId")
+    public Long getUserId(HttpServletRequest request){
+        log.info("请求头:{}",request.getHeader("Authorization"));
+        return (Long) request.getAttribute("userId");
+    }
+
     /*
     * 根据id查询指定用户信息（管理员专用）
     * */
@@ -96,6 +108,9 @@ public class UserController {
         // 记录旧数据（用于更新操作）
         LoginResultVO oldUser = userService.selectUserById(user.getId());
         LogContext.set("oldData", oldUser);
+        
+        // 确保operatorName被正确设置
+        LogContext.set("operatorName", admin.getUsername());
 
         // 执行更新
         Integer result = userService.updateUser(user);
