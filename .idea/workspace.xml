@@ -5,47 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9a3eec8-dd2f-4d5d-b495-42de07ece141" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/BackEndApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/BackEndApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/AuthInterceptorConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/config/CorsConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/org/example/backend/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/CommonBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/CommonBackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/aop/MallOperationLogAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/aop/MallOperationLogAspect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/code/MerchantStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/code/MerchantStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/code/UserStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/code/UserStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/config/RedisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/config/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/mapper/LogMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/mapper/LogMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/IOperationLogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/IOperationLogService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/Impl/IOperationLogServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/Impl/IOperationLogServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/Impl/LogQueryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/java/org/example/commonbackend/service/Impl/LogQueryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/common-backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/MerchantManagement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/MerchantManagement.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/UserManagement.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BEManagement/sidebar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/User.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/User.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/MerchantBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/MerchantBackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/MerchantController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/ShopController.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/ShopController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/VO/MerchantControllerVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/controller/VO/MerchantControllerVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Merchant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/entity/Shop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/mapper/MerchantMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/MerchantServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/ShopServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/Impl/ShopServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/MerchantService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/ShopService.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/service/ShopService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,9 +33,9 @@
         <option value="JavaScript File" />
         <option value="Kotlin Enum" />
         <option value="AnnotationType" />
-        <option value="Interface" />
         <option value="Enum" />
         <option value="Vue Composition API Component" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -175,19 +138,6 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="BackEndApplication" value="STOPPED" />
-              <entry key="CommonBackendApplication" value="STOPPED" />
-              <entry key="MerchantBackendApplication" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="RunManager" selected="npm.dev">
     <configuration name="BackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -204,9 +154,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CouponServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="coupon-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.couponservice.CouponServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MerchantBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="merchant-backend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.merchantbackend.MerchantBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderCartServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="order-cart-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.ordercartservice.OrderCartServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="product-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.productservice.ProductServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SeckillSessionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="SeckillSession" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.seckillsession.SeckillSessionApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -223,6 +201,10 @@
     </configuration>
     <list>
       <item itemvalue="npm.dev" />
+      <item itemvalue="Spring Boot.CouponServiceApplication" />
+      <item itemvalue="Spring Boot.OrderCartServiceApplication" />
+      <item itemvalue="Spring Boot.ProductServiceApplication" />
+      <item itemvalue="Spring Boot.SeckillSessionApplication" />
       <item itemvalue="Spring Boot.CommonBackendApplication" />
       <item itemvalue="Spring Boot.BackEndApplication" />
       <item itemvalue="Spring Boot.MerchantBackendApplication" />
@@ -272,6 +254,8 @@
       <workItem from="1773195425943" duration="6033000" />
       <workItem from="1773201525618" duration="15636000" />
       <workItem from="1773283109889" duration="21386000" />
+      <workItem from="1773363033628" duration="6178000" />
+      <workItem from="1773386760631" duration="2046000" />
     </task>
     <servers />
   </component>

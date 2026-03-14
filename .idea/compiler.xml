@@ -7,24 +7,32 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
-      <profile name="Annotation profile for 落叶商城多模块项目" enabled="true">
+      <profile name="Annotation profile for luoye-order" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="D:/环境配置/Maven/rely_on/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
         </processorPath>
-        <module name="back-end" />
+        <module name="order-cart-service" />
+        <module name="coupon-service" />
         <module name="common-backend" />
+        <module name="product-service" />
+        <module name="back-end" />
         <module name="merchant-backend" />
+        <module name="SeckillSession" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SeckillSession" options="-parameters" />
       <module name="back-end" options="-parameters" />
       <module name="common-backend" options="-parameters" />
+      <module name="coupon-service" options="-parameters" />
       <module name="merchant-backend" options="-parameters" />
+      <module name="order-cart-service" options="-parameters" />
+      <module name="product-service" options="-parameters" />
     </option>
   </component>
 </project>

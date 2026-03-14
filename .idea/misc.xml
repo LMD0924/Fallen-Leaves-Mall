@@ -13,6 +13,10 @@
         <option value="$PROJECT_DIR$/merchant-backend/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/common-backend/pom.xml" />
+        <option value="$PROJECT_DIR$/product-service/pom.xml" />
+        <option value="$PROJECT_DIR$/order-cart-service/pom.xml" />
+        <option value="$PROJECT_DIR$/coupon-service/pom.xml" />
+        <option value="$PROJECT_DIR$/SeckillSession/pom.xml" />
       </list>
     </option>
   </component>

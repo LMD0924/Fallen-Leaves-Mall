@@ -1,0 +1,122 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /seckill
+
+spring:
+  application:
+    name: seckill-service
+
+  # ?????
+  datasource:
+    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: 0924
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50  # ????????
+      idle-timeout: 30000
+      connection-timeout: 3000  # ????
+
+  # Redis????????
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 3  # ?????DB3
+      timeout: 2000ms  # ????
+      lettuce:
+        pool:
+          max-active: 50  # ?????
+          max-idle: 20
+          min-idle: 10
+          max-wait: 500ms  # ??????
+
+  # RabbitMQ??
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+      reply-timeout: 3000
+    listener:
+      simple:
+        acknowledge-mode: manual
+        concurrency: 10  # ???????
+        max-concurrency: 20
+        prefetch: 50  # ????
+
+  # Jackson??
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+# MyBatis-Plus??
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.luoye.seckill.entity
+  global-config:
+    db-config:
+      id-type: auto
+    banner: false
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # ????????
+
+# Redisson??
+redisson:
+  single-server-config:
+    address: redis://localhost:6379
+    database: 3
+    connection-pool-size: 50
+    connection-minimum-idle-size: 10
+    timeout: 3000
+
+# ??????
+seckill:
+  # ????
+  rate-limit:
+    enabled: true
+    user-per-second: 10  # ????????10?
+    ip-per-second: 50    # ??IP????50?
+
+  # ????
+  timeout:
+    order-expire-minutes: 15  # ??15???????
+
+  # ????
+  preheat:
+    enabled: true
+    auto-preheat: true  # ???????????
+
+# Actuator??
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# SpringDoc??
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# ??????????????
+logging:
+  level:
+    com.luoye.seckill: debug
+    com.luoye.seckill.service: debug
+    org.springframework.data.redis: info
+    org.springframework.amqp: info
