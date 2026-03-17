@@ -22,8 +22,8 @@ public class Cart {
     private Boolean selected;
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime= LocalDateTime.now();
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime= LocalDateTime.now();
 }

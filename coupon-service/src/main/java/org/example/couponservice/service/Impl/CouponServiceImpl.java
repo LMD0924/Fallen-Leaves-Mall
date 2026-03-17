@@ -73,9 +73,16 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 
         // 1. 分布式锁（防止同一用户并发领取）
         String lockKey = COUPON_RECEIVE_LOCK + userId + ":" + couponId;
+        //获取锁对象
         RLock lock = redissonClient.getLock(lockKey);
 
         try {
+            // 尝试获取锁，最多等待3秒，上锁以后10秒自动解锁
+            // 注意：这里的阻塞式等待，如果用户在等待期间获取到锁，那么就会导致其他用户无法获取锁
+            // 解决方案：使用非阻塞式等待，如果获取不到锁，则直接返回失败
+            // 这里使用的是阻塞式等待，因为如果用户在等待期间获取到锁，那么就会导致其他用户无法获取锁
+            // 解决方案：使用非阻塞式等待，如果获取不到锁，则直接返回失败
+            // 这里使用的是阻塞式等待，
             if (!lock.tryLock(3, 10, TimeUnit.SECONDS)) {
                 log.warn("获取锁失败，用户: {}, 优惠券: {}", userId, couponId);
                 throw new RuntimeException("操作太频繁，请稍后重试");
@@ -139,6 +146,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
             userCoupon.setStatus(0); // 未使用
             userCoupon.setStartTime(coupon.getUseStartTime());
             userCoupon.setEndTime(coupon.getUseEndTime());
+            userCoupon.setCreateTime(LocalDateTime.now());
+            userCoupon.setUpdateTime(LocalDateTime.now());
             userCouponMapper.insert(userCoupon);
 
             // 8. 异步更新数据库库存（通过MQ）
@@ -287,6 +296,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
             throw new RuntimeException("未达到使用条件");
         }
 
+        //TODO:校验订单是否存在
+
         // 3. 更新状态
         int updated = userCouponMapper.useCoupon(
                 dto.getUserCouponId(),
@@ -300,6 +311,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean refundCoupon(Long userCouponId, Long orderId) {
+        //TODO：无论ID为多少都能操作成功，当信息正确时，却没有退还，只是显示退还成功
+
         UserCoupon userCoupon = userCouponMapper.selectById(userCouponId);
         if (userCoupon == null || !orderId.equals(userCoupon.getOrderId())) {
             return false;

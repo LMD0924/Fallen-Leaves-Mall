@@ -6,9 +6,37 @@
   <component name="ChangeListManager">
     <list default="true" id="e9a3eec8-dd2f-4d5d-b495-42de07ece141" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/SeckillSessionApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/SeckillSessionApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/client/OrderFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/client/OrderFeignClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/service/Impl/SeckillServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/SeckillSession/src/main/java/org/example/seckillsession/service/Impl/SeckillServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/controller/CouponController.java" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/controller/CouponController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/Coupon.java" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/Coupon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/CouponReceiveLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/CouponReceiveLog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/UserCoupon.java" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/entity/UserCoupon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/service/Impl/CouponServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/java/org/example/couponservice/service/Impl/CouponServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/coupon-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/MerchantBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/java/org/example/merchantbackend/MerchantBackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/merchant-backend/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/OrderCartServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/OrderCartServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/client/ProductFeignClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/client/ProductFeignClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/common/OrderTimeoutHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/common/OrderTimeoutHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/dto/DeductStockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/dto/DeductStockDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/entity/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/service/Impl/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/service/Impl/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/service/Impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/service/Impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/vo/ProductSkuVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/java/org/example/ordercartservice/vo/ProductSkuVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-cart-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/order-cart-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/mapper/ProductSkuMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/mapper/ProductSkuMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/service/Impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/service/Impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,45 +100,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BackEndApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CommonBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MerchantBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/GitHub/Fallen-Leaves-Mall/common-backend/src/main/java/org/example/commonbackend/code&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\刘梦达\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.BackEndApplication.executor": "Run",
+    "Spring Boot.CommonBackendApplication.executor": "Run",
+    "Spring Boot.CouponServiceApplication.executor": "Run",
+    "Spring Boot.MerchantBackendApplication.executor": "Run",
+    "Spring Boot.OrderCartServiceApplication.executor": "Run",
+    "Spring Boot.ProductServiceApplication.executor": "Run",
+    "Spring Boot.SeckillSessionApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/GitHub/Fallen-Leaves-Mall/common-backend/src/main/java/org/example/commonbackend/code",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "editing.templates",
+    "ts.external.directory.path": "C:\\Users\\刘梦达\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;vue.recent.templates&quot;: [
-      &quot;Vue Composition API Component&quot;
+    "vue.recent.templates": [
+      "Vue Composition API Component"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\GitHub\Fallen-Leaves-Mall\common-backend\src\main\java\org\example\commonbackend\code" />
@@ -138,8 +170,23 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="CouponServiceApplication" value="STOPPED" />
+              <entry key="MerchantBackendApplication" value="STOPPED" />
+              <entry key="OrderCartServiceApplication" value="STOPPED" />
+              <entry key="ProductServiceApplication" value="STOPPED" />
+              <entry key="SeckillSessionApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="Spring Boot.MerchantBackendApplication">
     <configuration name="BackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="back-end" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.backend.BackEndApplication" />
@@ -256,6 +303,8 @@
       <workItem from="1773283109889" duration="21386000" />
       <workItem from="1773363033628" duration="6178000" />
       <workItem from="1773386760631" duration="2046000" />
+      <workItem from="1773464101955" duration="9236000" />
+      <workItem from="1773714483619" duration="10012000" />
     </task>
     <servers />
   </component>

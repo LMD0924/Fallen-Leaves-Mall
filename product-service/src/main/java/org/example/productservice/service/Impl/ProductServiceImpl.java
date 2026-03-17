@@ -8,16 +8,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.productservice.dto.DeductStockForOrderDTO;
 import org.example.productservice.dto.ProductQueryDTO;
+import org.example.productservice.dto.RestoreStockDTO;
 import org.example.productservice.entity.Product;
 import org.example.productservice.entity.ProductSku;
 import org.example.productservice.mapper.ProductMapper;
 import org.example.productservice.mapper.ProductSkuMapper;
 import org.example.productservice.service.ProductService;
-import org.example.productservice.vo.ProductDetailVO;
-import org.example.productservice.vo.ProductListVO;
-import org.example.productservice.vo.SkuDeduct;
-import org.example.productservice.vo.SkuVO;
+import org.example.productservice.vo.*;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +43,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private static final String PRODUCT_LIST_KEY = "product:list:";
     private static final String PRODUCT_STOCK_KEY = "product:stock:";
     private static final String SKU_STOCK_KEY = "sku:stock:";
+    private static final String SKU_INFO_KEY = "product:sku:";
+    private static final String SECKILL_STOCK_KEY = "seckill:stock:";
 
     // Lua脚本：扣减库存
     private static final String DEDUCT_STOCK_LUA =
@@ -226,4 +227,161 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         List<Long> hotProductIds = Arrays.asList(1L, 2L, 3L); // 示例
         hotProductIds.forEach(this::preheatStock);
     }
+
+    @Override
+    public ProductSkuVO getSkuInfo(Long skuId) {
+        // 1. 先从缓存获取
+        String cacheKey = SKU_INFO_KEY + skuId;
+        ProductSkuVO cached = (ProductSkuVO) redisTemplate.opsForValue().get(cacheKey);
+        if (cached != null) {
+            log.debug("从缓存获取SKU信息: skuId={}", skuId);
+            return cached;
+        }
+
+        // 2. 缓存未命中，查询数据库
+        ProductSku sku = skuMapper.selectById(skuId);
+        if (sku == null) {
+            return null;
+        }
+
+        // 3. 查询商品信息
+        Product product = productMapper.selectById(sku.getProductId());
+
+        // 4. 组装VO
+        ProductSkuVO vo = new ProductSkuVO();
+        BeanUtils.copyProperties(sku, vo);
+        if (product != null) {
+            vo.setProductName(product.getName());
+        }
+
+        // 5. 存入缓存（30分钟）
+        redisTemplate.opsForValue().set(cacheKey, vo, 30, TimeUnit.MINUTES);
+
+        return vo;
+    }
+
+    @Override
+    public Map<Long, ProductSkuVO> batchGetSkuInfo(List<Long> skuIds) {
+        Map<Long, ProductSkuVO> result = new HashMap<>();
+
+        if (skuIds == null || skuIds.isEmpty()) {
+            return result;
+        }
+
+        // 1. 先从缓存批量获取
+        List<String> cacheKeys = skuIds.stream()
+                .map(id -> SKU_INFO_KEY + id)
+                .collect(Collectors.toList());
+
+        List<Object> cachedList = redisTemplate.opsForValue().multiGet(cacheKeys);
+
+        // 2. 找出未缓存的ID
+        List<Long> uncachedIds = new ArrayList<>();
+        for (int i = 0; i < skuIds.size(); i++) {
+            Long id = skuIds.get(i);
+            Object cached = cachedList != null && i < cachedList.size() ? cachedList.get(i) : null;
+            if (cached != null) {
+                result.put(id, (ProductSkuVO) cached);
+            } else {
+                uncachedIds.add(id);
+            }
+        }
+
+        // 3. 查询未缓存的SKU
+        if (!uncachedIds.isEmpty()) {
+            List<ProductSku> skus = skuMapper.selectBatchIds(uncachedIds);
+
+            // 获取商品信息（批量查询优化）
+            Set<Long> productIds = skus.stream()
+                    .map(ProductSku::getProductId)
+                    .collect(Collectors.toSet());
+            Map<Long, Product> productMap = productMapper.selectBatchIds(productIds).stream()
+                    .collect(Collectors.toMap(Product::getId, p -> p));
+
+            for (ProductSku sku : skus) {
+                ProductSkuVO vo = new ProductSkuVO();
+                BeanUtils.copyProperties(sku, vo);
+
+                Product product = productMap.get(sku.getProductId());
+                if (product != null) {
+                    vo.setProductName(product.getName());
+                }
+
+                result.put(sku.getId(), vo);
+
+                // 存入缓存
+                redisTemplate.opsForValue().set(SKU_INFO_KEY + sku.getId(), vo, 30, TimeUnit.MINUTES);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean restoreStock(RestoreStockDTO dto) {
+        if (dto.getItems() == null || dto.getItems().isEmpty()) {
+            log.warn("恢复库存失败：商品列表为空");
+            return false;
+        }
+
+        log.info("恢复库存: orderNo={}, reason={}", dto.getOrderNo(), dto.getReason());
+
+        for (RestoreStockDTO.RestoreItem item : dto.getItems()) {
+            // 1. 恢复SKU库存
+            int updated = skuMapper.restoreStock(item.getSkuId(), item.getCount());
+            if (updated > 0) {
+                log.debug("恢复SKU库存: skuId={}, count={}", item.getSkuId(), item.getCount());
+
+                // 2. 清除SKU缓存
+                redisTemplate.delete(SKU_INFO_KEY + item.getSkuId());
+
+                // 3. 如果商品有秒杀库存，也恢复Redis中的秒杀库存
+                String seckillKey = SECKILL_STOCK_KEY + item.getSkuId();
+                redisTemplate.opsForValue().increment(seckillKey, item.getCount());
+            }
+
+            // 4. 恢复商品总库存（如果需要）
+            // productMapper.restoreTotalStock(item.getProductId(), item.getCount());
+        }
+
+        // 5. 清除商品详情缓存（因为库存变了）
+        dto.getItems().stream()
+                .map(RestoreStockDTO.RestoreItem::getProductId)
+                .distinct()
+                .forEach(productId -> redisTemplate.delete("product:detail:" + productId));
+
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deductStockForOrder(DeductStockForOrderDTO dto) {
+
+        log.info("普通订单扣减库存: orderNo={}", dto.getOrderNo());
+
+        if (dto.getItems() == null || dto.getItems().isEmpty()) {
+            throw new RuntimeException("商品列表不能为空");
+        }
+
+        // 遍历扣减每个SKU的库存
+        for (DeductStockForOrderDTO.OrderItem item : dto.getItems()) {
+            // 扣减SKU库存（带库存检查）
+            int updated = skuMapper.deductStock(item.getSkuId(), item.getCount());
+
+            if (updated == 0) {
+                // 扣减失败，回滚事务
+                throw new RuntimeException("商品库存不足，SKU ID: " + item.getSkuId());
+            }
+
+            log.debug("扣减SKU库存成功: skuId={}, count={}", item.getSkuId(), item.getCount());
+
+            // 清除SKU缓存
+            redisTemplate.delete(SKU_INFO_KEY + item.getSkuId());
+        }
+
+        return true;
+    }
+
+
 }

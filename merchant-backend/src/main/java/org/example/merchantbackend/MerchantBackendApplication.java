@@ -8,7 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 @MapperScan({
         "org.example.merchantbackend.mapper",
-        "org.example.backend.mapper"
+        "org.example.backend.mapper",
+        "org.example.couponservice.mapper",
+        "org.example.productservice.mapper",
 })
 @EnableFeignClients
 @SpringBootApplication

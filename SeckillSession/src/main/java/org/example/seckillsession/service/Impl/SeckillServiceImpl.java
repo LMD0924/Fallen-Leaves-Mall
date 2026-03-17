@@ -5,8 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.backend.common.RestBean;
 import org.example.ordercartservice.client.ProductFeignClient;
+import org.example.ordercartservice.dto.CreateOrderDTO;
+import org.example.ordercartservice.dto.OrderItemDTO;
+import org.example.ordercartservice.vo.OrderDetailVO;
+import org.example.ordercartservice.vo.ProductSkuVO;
+import org.example.seckillsession.client.OrderFeignClient;
 import org.example.seckillsession.dto.SeckillRequestDTO;
+import org.example.seckillsession.entity.SeckillOrder;
 import org.example.seckillsession.entity.SeckillProduct;
 import org.example.seckillsession.entity.SeckillSession;
 import org.example.seckillsession.mapper.SeckillOrderMapper;
@@ -24,7 +31,7 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +47,6 @@ public class SeckillServiceImpl implements SeckillService {
     private final SeckillSessionMapper sessionMapper;
     private final SeckillOrderMapper seckillOrderMapper;
     private final RedisTemplate<String, Object> redisTemplate;
-    private final StringRedisTemplate stringRedisTemplate;
-    private final RedissonClient redissonClient;
     private final ProductFeignClient productFeignClient;
     private final OrderFeignClient orderFeignClient;
     private final HttpServletRequest request;
@@ -136,7 +141,8 @@ public class SeckillServiceImpl implements SeckillService {
             vo.setSeckillStock(stock != null ? stock : sp.getSeckillStock());
 
             // 查询商品详情
-            ProductSkuVO sku = productFeignClient.getSkuInfo(sp.getSkuId());
+            RestBean<ProductSkuVO> restBean = productFeignClient.getSkuInfo(sp.getSkuId());
+            ProductSkuVO sku= restBean.getData();
             if (sku != null) {
                 vo.setProductName(sku.getProductName());
                 vo.setProductImage(sku.getImage());
@@ -174,7 +180,8 @@ public class SeckillServiceImpl implements SeckillService {
         vo.setSeckillStock(stock != null ? stock : sp.getSeckillStock());
 
         // 商品详情
-        ProductSkuVO sku = productFeignClient.getSkuInfo(sp.getSkuId());
+        RestBean<ProductSkuVO> restBean = productFeignClient.getSkuInfo(sp.getSkuId());
+        ProductSkuVO sku = restBean.getData();
         if (sku != null) {
             vo.setProductName(sku.getProductName());
             vo.setProductImage(sku.getImage());
@@ -437,8 +444,8 @@ public class SeckillServiceImpl implements SeckillService {
                 item.setCount(seckillOrder.getQuantity());
                 orderDTO.setItems(Arrays.asList(item));
 
-                OrderDetailVO order = orderFeignClient.createSeckillOrder(orderDTO);
-
+                RestBean<OrderDetailVO> restBean = orderFeignClient.createSeckillOrder(orderDTO);
+                OrderDetailVO order = restBean.getData();
                 // 更新秒杀订单
                 seckillOrder.setOrderId(order.getId());
                 seckillOrder.setOrderNo(order.getOrderNo());

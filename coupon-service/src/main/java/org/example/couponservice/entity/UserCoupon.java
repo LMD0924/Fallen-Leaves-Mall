@@ -15,6 +15,7 @@ public class UserCoupon {
     private Long couponId;
     private String code;            // 唯一券码
     private BigDecimal faceValue;
+    @TableField("`condition`")
     private BigDecimal condition;
     private Integer type;
     private Integer status;         // 0未使用 1已使用 2已过期 3已冻结
@@ -22,8 +23,8 @@ public class UserCoupon {
     private LocalDateTime useTime;
     private Long orderId;
     private String orderNo;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDateTime startTime = LocalDateTime.now();
+    private LocalDateTime endTime = LocalDateTime.now().plusDays(30);
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

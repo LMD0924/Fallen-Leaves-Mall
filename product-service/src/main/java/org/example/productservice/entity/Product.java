@@ -23,8 +23,9 @@ public class Product {
     private String detail;
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = LocalDateTime.now();  // 设置默认值
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime = LocalDateTime.now();  // 设置默认值
+
 }

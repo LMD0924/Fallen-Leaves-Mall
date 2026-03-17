@@ -14,6 +14,7 @@ public class Coupon {
     private String name;
     private Integer type;           // 1满减券 2折扣券 3无门槛券
     private BigDecimal faceValue;   // 面值
+    @TableField("`condition`")
     private BigDecimal condition;   // 使用条件
     private Integer totalCount;     // 发行总量
     private Integer receiveCount;   // 已领取
@@ -28,8 +29,8 @@ public class Coupon {
     private Integer scopeType;      // 1全场 2指定商品 3指定分类
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = LocalDateTime.now();  // 设置默认值
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime = LocalDateTime.now();  // 设置默认值
 }

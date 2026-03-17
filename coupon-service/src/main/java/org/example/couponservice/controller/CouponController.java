@@ -54,8 +54,11 @@ public class CouponController {
     @GetMapping("/applicable")
     public RestBean<List<UserCouponVO>> getApplicableCoupons(
             @RequestParam Long userId,
+            //总金额
             @RequestParam BigDecimal totalAmount,
+            //商品id列表
             @RequestParam List<Long> productIds,
+            //商品分类id列表
             @RequestParam List<Long> categoryIds) {
         List<UserCouponVO> list = couponService.getApplicableCoupons(
                 userId, totalAmount, productIds, categoryIds);

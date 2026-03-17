@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.backend.common.RestBean;
 import org.example.ordercartservice.client.ProductFeignClient;
 import org.example.ordercartservice.dto.AddToCartDTO;
 import org.example.ordercartservice.dto.UpdateCartDTO;
@@ -35,7 +36,11 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
     @Transactional(rollbackFor = Exception.class)
     public CartVO addToCart(AddToCartDTO dto) {
         // 1. 校验商品库存
-        ProductSkuVO sku = productFeignClient.getSkuInfo(dto.getSkuId());
+        RestBean<ProductSkuVO> restBean = productFeignClient.getSkuInfo(dto.getSkuId());
+        if (restBean.getCode() != 200) {
+            throw new RuntimeException("商品服务调用失败: " + restBean.getMessage());
+        }
+        ProductSkuVO sku = restBean.getData();
         if (sku == null) {
             throw new RuntimeException("商品不存在");
         }
@@ -81,7 +86,11 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         }
 
         // 校验库存
-        ProductSkuVO sku = productFeignClient.getSkuInfo(cart.getSkuId());
+        RestBean<ProductSkuVO> restBean = productFeignClient.getSkuInfo(cart.getSkuId());
+        if (restBean.getCode() != 200) {
+            throw new RuntimeException("商品服务调用失败: " + restBean.getMessage());
+        }
+        ProductSkuVO sku = restBean.getData();
         if (sku.getStock() < dto.getCount()) {
             throw new RuntimeException("库存不足");
         }
@@ -117,7 +126,11 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         List<Long> skuIds = cartList.stream()
                 .map(Cart::getSkuId)
                 .collect(Collectors.toList());
-        Map<Long, ProductSkuVO> skuMap = productFeignClient.batchGetSkuInfo(skuIds);
+        RestBean<Map<Long, ProductSkuVO>> restBean = productFeignClient.batchGetSkuInfo(skuIds);
+        if (restBean.getCode() != 200) {
+            throw new RuntimeException("商品服务调用失败");
+        }
+        Map<Long, ProductSkuVO> skuMap = restBean.getData();
 
         // 3. 组装VO
         List<CartItemVO> items = cartList.stream().map(cart -> {
@@ -135,7 +148,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
             ProductSkuVO sku = skuMap.get(cart.getSkuId());
             if (sku != null) {
                 item.setStock(sku.getStock());
-                item.setValid(sku.getStock() >= cart.getCount() && sku.getStatus() == 1);
+                item.setValid(sku.getStock() >= cart.getCount() && sku.getStatus() != null && sku.getStatus() == 1);
                 // 如果价格变了，标记出来
                 if (sku.getPrice().compareTo(cart.getPrice()) != 0) {
                     item.setPriceChanged(true);

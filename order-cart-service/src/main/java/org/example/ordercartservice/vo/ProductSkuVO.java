@@ -69,6 +69,9 @@ public class ProductSkuVO {
     @Schema(description = "是否默认", example = "false")
     private Boolean isDefault;
 
+
+    private String detail;
+
     /**
      * 规格项内部类
      */

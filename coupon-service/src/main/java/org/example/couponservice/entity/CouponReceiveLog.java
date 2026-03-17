@@ -18,7 +18,4 @@ public class CouponReceiveLog {
     private String message;      // 失败原因
     private String ip;           // 领取IP
     private String userAgent;    // 用户设备信息
-
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fallenleaves.order.entity.OrderItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.backend.common.RestBean;
 import org.example.ordercartservice.client.ProductFeignClient;
 import org.example.ordercartservice.dto.*;
 import org.example.ordercartservice.entity.Order;
@@ -72,7 +73,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             List<Long> skuIds = items.stream()
                     .map(OrderItemDTO::getSkuId)
                     .collect(Collectors.toList());
-            Map<Long, ProductSkuVO> skuMap = productFeignClient.batchGetSkuInfo(skuIds);
+            RestBean<Map<Long, ProductSkuVO>> restBean = productFeignClient.batchGetSkuInfo(skuIds);
+            if (restBean.getCode() != 200) {
+                throw new RuntimeException("商品服务调用失败");
+            }
+            Map<Long, ProductSkuVO> skuMap = restBean.getData();
 
             BigDecimal totalAmount = BigDecimal.ZERO;
             List<OrderItem> orderItems = new ArrayList<>();
@@ -131,10 +136,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 7. 扣减库存（调用商品服务）
             DeductStockDTO deductDTO = new DeductStockDTO();
             deductDTO.setOrderNo(orderNo);
-           // deductDTO.setItems(items);
-            boolean deductResult = productFeignClient.deductStock(deductDTO);
-            if (!deductResult) {
-                throw new RuntimeException("扣减库存失败");
+            
+            // 构造商品列表
+            List<DeductStockDTO.OrderItem> deductItems = new ArrayList<>();
+            for (OrderItem item : orderItems) {
+                DeductStockDTO.OrderItem deductItem = new DeductStockDTO.OrderItem();
+                deductItem.setProductId(item.getProductId());
+                deductItem.setSkuId(item.getSkuId());
+                deductItem.setCount(item.getCount());
+                deductItems.add(deductItem);
+            }
+            deductDTO.setItems(deductItems);
+
+            RestBean<Boolean> restBean1 = productFeignClient.deductStock(deductDTO);
+            if (restBean1.getCode() != 200 || !restBean1.getData()) {
+                throw new RuntimeException("扣减库存失败: " + restBean.getMessage());
             }
 
             // 8. 记录日志

@@ -1,5 +1,6 @@
 package org.example.seckillsession.client;
 
+import org.example.backend.common.RestBean;
 import org.example.ordercartservice.dto.CreateOrderDTO;
 import org.example.ordercartservice.vo.OrderDetailVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -15,5 +16,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface OrderFeignClient {
 
     @PostMapping("/seckill/create")
-    OrderDetailVO createSeckillOrder(@RequestBody CreateOrderDTO dto);
+    RestBean<OrderDetailVO> createSeckillOrder(@RequestBody CreateOrderDTO dto);
 }

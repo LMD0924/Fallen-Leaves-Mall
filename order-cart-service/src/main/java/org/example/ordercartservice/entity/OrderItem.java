@@ -23,5 +23,5 @@ public class OrderItem {
     private BigDecimal totalAmount;
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime= LocalDateTime.now();
 }
